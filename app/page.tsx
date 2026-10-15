@@ -4,7 +4,7 @@ import Motion from "@/components/Motion";
 import Hero from "@/components/sections/Hero";
 import Work from "@/components/sections/Work";
 import Course from "@/components/sections/Course";
-import SampleClass from "@/components/sections/SampleClass";
+import Products from "@/components/sections/Products";
 import Extras from "@/components/sections/Extras";
 import Agus from "@/components/sections/Agus";
 import Students from "@/components/sections/Students";
@@ -19,7 +19,7 @@ export default function Home() {
         <Hero />
         <Work />
         <Course />
-        <SampleClass />
+        <Products />
         <Extras />
         <Agus />
         <Students />

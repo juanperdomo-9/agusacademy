@@ -14,7 +14,7 @@ export const sections = [
   { id: "inicio", label: "Inicio" },
   { id: "trabajo", label: "El trabajo" },
   { id: "curso", label: "El curso" },
-  { id: "clase", label: "Clase de muestra" },
+  { id: "productos", label: "Productos" },
   { id: "extras", label: "Extras" },
   { id: "agus", label: "Quién enseña" },
   { id: "alumnos", label: "Alumnos" },
@@ -76,19 +76,48 @@ export const course = {
   ] as { n: string; name: string; detail: string; src?: string; focus?: string }[],
 };
 
-export const sampleClass = {
-  title: "Mirá cómo enseña.",
-  lead: "Una clase del curso tal como la vas a ver adentro: cámara a las manos, paso por paso, sin cortes de edición.",
-  // ID de un video NO LISTADO de YouTube (lo que va después de watch?v=). null = espacio reservado.
-  youtubeId: null as string | null,
-  pending: "Video de muestra pendiente",
-  // Capítulos ilustrativos: reemplazar con los tiempos reales del video.
-  chapters: [
-    { t: "00:00", label: "Lectura del cabello" },
-    { t: "02:40", label: "Línea de base con la #0" },
-    { t: "06:15", label: "Transición sin escalones" },
-    { t: "11:30", label: "Conexión con tijera" },
-    { t: "15:05", label: "Terminación y foto" },
+// Productos Forma Essent (datos tomados de los afiches que pasó el cliente). Precios y link de compra: a confirmar.
+export const products = {
+  title: "Productos.",
+  lead: "Texturizadores, ceras y cremas Forma Essent para terminar cada corte.",
+  buyUrl: "#", // TODO: link de compra (tienda o WhatsApp)
+  items: [
+    {
+      id: "polvo-texturizador",
+      name: "Polvo texturizador",
+      kind: "Volumen · Textura · Control",
+      text: "El aliado perfecto para un look con más actitud.",
+      specs: ["Volumen natural", "Textura mate", "Fijación fuerte"],
+      price: "[$XX.XXX]",
+      image: "/productos/polvo-texturizador.jpg",
+    },
+    {
+      id: "agua-marina",
+      name: "Agua Marina",
+      kind: "Sea salt spray · Texturizador de sal marina",
+      text: "Textura, volumen y movimiento natural. Con romero, argán y provitamina B5.",
+      specs: ["Efecto playero", "Acabado natural", "Para peinados texturizados"],
+      price: "[$XX.XXX]",
+      image: "/productos/agua-marina.jpg",
+    },
+    {
+      id: "cera-mate",
+      name: "Cera mate",
+      kind: "Fijación media · Acabado natural",
+      text: "Estilo natural todo el día, sin brillo. 100 g.",
+      specs: ["Fijación media", "Sin brillo", "Textura flexible"],
+      price: "[$XX.XXX]",
+      image: "/productos/cera-mate.jpg",
+    },
+    {
+      id: "crema-rizos",
+      name: "Crema de peinar rizos",
+      kind: "2 en 1 · Crema de peinar y acondicionador",
+      text: "Hidratación, definición y fuerza. Almendra, romero, ricino, ortiga, jojoba y argán.",
+      specs: ["Apto vegano", "Libre de parabenos", "Apto cowash"],
+      price: "[$XX.XXX]",
+      image: "/productos/crema-rizos.jpg",
+    },
   ],
 };
 
@@ -138,20 +167,29 @@ export const agus = {
 
 export const students = {
   title: "Alumnos.",
-  note: "Testimonios reales pendientes. Esta sección no se publica hasta tenerlos.",
-  items: [1, 2, 3].map((i) => ({ name: `[Alumno ${i}]`, city: "[Ciudad]", text: "[Testimonio real con permiso]" })),
+  lead: "Así se aprende con Agus: en la silla, en vivo y en comunidad.",
+  // Solo testimonios reales y con permiso. Hasta tenerlos quedan entre corchetes.
+  items: [1, 2, 3].map((i) => ({ name: `[Alumno ${i}]`, city: "[Ciudad]", text: "[Testimonio real, con permiso del alumno.]" })),
+  // Fotos reales de seminarios, del portfolio de Agus.
+  photos: [
+    { src: "/portfolio/p08.jpeg", w: 1365, h: 2048, n: "S1", name: "Demostración en vivo" },
+    { src: "/portfolio/p06.jpeg", w: 1152, h: 1536, n: "S2", name: "Seminario" },
+  ],
 };
 
 export const enrollment = {
   title: "Inscripción.",
   priceNow: "[$XX.XXX]",
   priceBefore: "[$XX.XXX]",
+  includesLabel: "Qué incluye",
   guarantee: "[Garantía a confirmar: días y condiciones.]",
+  payment: "[Pago con Mercado Pago: a confirmar.]",
   cta: "Inscribirme ahora",
 };
 
 export const faq = {
   title: "Preguntas.",
+  more: "¿Otra duda? Escribile a Agus",
   items: [
     { q: "¿Necesito experiencia previa?", a: "[Respuesta a confirmar con Agus.]" },
     { q: "¿Qué herramientas necesito?", a: "[Lista mínima de herramientas.]" },

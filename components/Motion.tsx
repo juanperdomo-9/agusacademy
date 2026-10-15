@@ -5,10 +5,11 @@ import Lenis from "lenis";
 
 // Qué entra con cascada en cada sección (el hero y la doble página del curso tienen su propio movimiento).
 const REVEAL = [
-  ".t-lead", ".work-item", ".work-more", ".sample-frame", ".sample-chapters li",
+  ".t-lead", ".work-item", ".work-more",
   ".extras-list li", ".cert", ".cert-try", ".for-who-list li", ".agus-photo",
   ".agus-story > *", ".tour-city", ".tour-facts > *", ".testimonial",
   ".enroll-price > *", ".enroll-detail > *", ".faq-list details",
+  ".product", ".students-photo", ".site-footer-word",
   ".pf-media", ".pf-text > *", ".pf-values li", ".pf-collab-copy > *", ".pf-sign > *",
 ].join(",");
 

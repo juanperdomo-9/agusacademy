@@ -216,8 +216,14 @@ Foto de Agus en escenario como pieza grande (6 columnas) junto a su historia y s
 ### Certificado (Extras)
 Objeto central de «Lo que te llevás»: una hoja de papel hueso apaisada (1.414:1), inclinada −1.2°, con sombra de papel sobre la mesa y un marco interior de 1.5px en carbón. Lleva el monograma con «Agus Martín Academy», el rótulo «Certificado de finalización», el nombre en Display ancho sobre una línea de firma, una frase del método, la firma de Agus y un sello circular carbón «Método completo», girado −8°. **Cosa viva:** debajo, el campo «Probá con tu nombre» escribe en el certificado mientras tipeás. El nombre se achica midiendo su ancho real hasta entrar en una línea; en celular puede ocupar dos. Los extras van a la izquierda como filas de texto (Title + Body en Plata), nunca como tarjetas con imagen.
 
-### Reproductor «Clase de muestra»
-Cuadro 16:9 en Carbón Alto, con grano y dos marcas de encuadre de cámara en esquinas opuestas. El ícono de play es un círculo con triángulo en SVG. Carga YouTube (dominio youtube-nocookie) recién al tocar play. Al costado van los capítulos con tiempo en Label; tocar uno arranca el video en ese punto. Sin video cargado, el cuadro queda en Plata con «Video de muestra pendiente» y sin acción.
+### Productos (Forma Essent)
+Reemplaza a la clase de muestra. Cuatro fichas en una fila con escalón (las pares bajan 48px): pieza 4:5 con la foto del envase en blanco y negro sobre carbón (generada desde los afiches, ver `public/productos/ORIGEN.md`), nombre en Title, tipo y atributos en Note Plata, frase en Body, y al pie el precio en Headline con un botón fantasma pequeño «Comprar». Hover con mouse: la pieza sube 6px y la foto se acerca 4%.
+
+### Alumnos, Inscripción, Preguntas y pie
+- **Alumnos:** testimonios (solo reales, en mayúsculas anchas a tamaño de lectura) junto a dos fotos reales de seminarios superpuestas como copias apoyadas.
+- **Inscripción:** ficha en papel hueso; precio en display ancho (hasta 7.5rem), lista numerada de lo que incluye, botón carbón a todo el ancho, garantía y forma de pago en Note.
+- **Preguntas:** título fijo a la izquierda con link a Instagram; acordeón a la derecha.
+- **Pie:** logo, navegación (curso, productos, portfolio, Instagram), «Agus Martín» a todo el ancho (10vw) y línea legal.
 
 ### Botón principal
 Rectángulo hueso con texto carbón en Title («Inscribirme») y borde real de 1px del mismo color (nunca una sombra interna). Hover: se invierte a carbón y el borde hueso queda como contorno, en 180ms. Focus: contorno hueso de 2px separado 3px. Sobre papel hueso se usa la variante carbón. Siempre va acompañado de la línea de datos fijos de la oferta.
