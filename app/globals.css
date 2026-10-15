@@ -754,4 +754,7 @@ html.reduce-motion [data-parallax] { scale: none; }
   .pf-values li { grid-template-columns: 4ch 1fr; }
   .pf-values li .t-body { grid-column: 2; }
   .pf-media .piece { max-width: none; }
+  /* La palabra más ancha («OPORTUNIDADES.») tiene que entrar en 375px. */
+  .pf-text { min-width: 0; }
+  .pf-text .t-display { font-size: 7vw; }
 }
