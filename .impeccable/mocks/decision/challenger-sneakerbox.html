@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Pared de Cajas</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;background:#d9d9d6;color:#000;overflow:hidden;font-family:"Arial Narrow",Arial,sans-serif}
+.wall{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:6px;padding:6px}
+.box{background:#0b0b0b;position:relative}
+.box .lbl{position:absolute;left:14px;bottom:14px;width:150px;height:40px;background:#fff;padding:6px 8px;font-size:11px;letter-spacing:.1em}
+.out{position:absolute;left:400px;top:210px;width:640px;height:420px;background:#0b0b0b;box-shadow:0 40px 80px rgba(0,0,0,.45);transform:translateZ(0)}
+.lid{position:absolute;left:0;right:0;top:-120px;height:140px;background:#1a1a1a;transform:perspective(900px) rotateX(55deg);transform-origin:bottom}
+.video{position:absolute;left:30px;top:30px;width:330px;height:360px;background:radial-gradient(ellipse at 50% 40%,#bdbdbd,#3a3a3a 60%,#000)}
+.label{position:absolute;right:30px;top:30px;width:240px;background:#fff;padding:18px}
+.label .k{font-size:12px;letter-spacing:.14em}
+.label h1{font-size:54px;line-height:.9;font-weight:900;font-stretch:condensed;margin:10px 0}
+.label .sz{font-family:monospace;font-size:14px;margin:8px 0}
+.cta{position:absolute;right:30px;bottom:30px;width:240px;background:#fff;color:#000;text-align:center;font-weight:900;font-size:22px;padding:20px;border:3px solid #000}
+.nav{position:absolute;left:30px;top:24px;background:#fff;padding:8px 12px;font-size:13px;letter-spacing:.14em}
+</style></head><body>
+<div class="wall">
+<div class="box"><div class="lbl">01 · LOW FADE</div></div><div class="box"><div class="lbl">02 · TIJERA</div></div><div class="box"></div><div class="box"><div class="lbl">03 · TEXTURA</div></div><div class="box"></div>
+<div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"><div class="lbl">04 · CONTRASTE</div></div>
+<div class="box"><div class="lbl">05 · CLIENTE</div></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+<div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div><div class="box"><div class="lbl">06 · MARCA</div></div>
+<div class="box"></div><div class="box"></div><div class="box"><div class="lbl">BONUS</div></div><div class="box"></div><div class="box"></div>
+</div>
+<div class="nav">AGUS MARTIN ACADEMY</div>
+<div class="out"><div class="lid"></div><div class="video"></div>
+ <div class="label"><div class="k">CURSO 01 — EDICIÓN LANZAMIENTO</div><h1>FADE<br>SIN<br>MIEDO</h1><div class="sz">MÓD 01 02 03 04 05 06</div><div class="sz">CIERRA 02:14:37:09</div></div>
+ <a class="cta">ABRIR LA CAJA</a>
+</div>
+</body></html>
