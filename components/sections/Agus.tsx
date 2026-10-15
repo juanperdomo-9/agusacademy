@@ -20,6 +20,9 @@ export default function Agus() {
           <h2 id="agus-title" className="t-display">{agus.title}</h2>
           {agus.story.map((p) => <p key={p} className="t-body">{p}</p>)}
           <blockquote className="agus-quote">{agus.quote}</blockquote>
+          <a className="btn btn--ghost agus-portfolio" href="/portfolio">
+            <span className="btn-label">Ver portfolio</span>
+          </a>
         </div>
       </div>
 

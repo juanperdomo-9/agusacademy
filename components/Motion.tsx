@@ -9,6 +9,7 @@ const REVEAL = [
   ".extras-list li", ".cert", ".cert-try", ".for-who-list li", ".agus-photo",
   ".agus-story > *", ".tour-city", ".tour-facts > *", ".testimonial",
   ".enroll-price > *", ".enroll-detail > *", ".faq-list details",
+  ".pf-media", ".pf-text > *", ".pf-values li", ".pf-collab-copy > *", ".pf-sign > *",
 ].join(",");
 
 // Capa de movimiento de todo el sitio. Sin JS, nada se oculta.

@@ -182,6 +182,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .btn:active, .header-cta:active { scale: 0.97; }
 .btn--dark { background: var(--coal); color: var(--bone); border-color: var(--coal); }
 .btn--dark::before { background: var(--bone); }
+/* Fantasma: sin relleno en reposo, solo el borde; al pasar el mouse se llena de hueso. */
+.btn--ghost { background: transparent; border-color: var(--bone); }
+.btn--ghost::before { background: var(--bone); }
 
 .facts { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); list-style: none; color: var(--silver); font-size: var(--fs-note); }
 .facts li + li::before { content: "·"; margin-right: var(--s3); }
@@ -492,6 +495,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .agus-photo { grid-column: 1 / span 6; }
 .agus-story { grid-column: 8 / -1; display: grid; gap: var(--s6); align-content: start; }
 .agus-story .t-display { margin-bottom: var(--s4); }
+.agus-portfolio { justify-self: start; margin-top: var(--s4); }
 .agus-quote {
   margin-top: var(--s6);
   font-size: clamp(1.375rem, 2.1vw, 2rem); font-weight: 600; font-variation-settings: var(--w-wide);
@@ -707,3 +711,47 @@ html.motion:not(.reduce-motion) .is-armed .spread-seal[data-complete="true"] { a
 /* Movimiento reducido: sin zoom de entrada ni escala de parallax. */
 html.reduce-motion .hero-plate .piece-media img { animation: none; }
 html.reduce-motion [data-parallax] { scale: none; }
+
+/* ---------- Portafolio (/portfolio) ---------- */
+.pf-hero-title { padding-top: var(--s12); }
+.pf-chapter { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s6); row-gap: var(--s12); align-items: center; }
+.pf-text { display: grid; gap: var(--s6); align-content: start; }
+.pf-text .t-body { max-width: 52ch; }
+/* Títulos de capítulo un paso más chicos: las palabras anchas tienen que entrar en media página. */
+.pf-text .t-display { font-size: clamp(2.25rem, 3.4vw, 3.25rem); overflow-wrap: break-word; }
+.pf-text .agus-quote { margin-top: var(--s4); }
+/* Foto a la derecha, a la izquierda o ancha debajo del texto. */
+.pf-chapter--right .pf-text { grid-column: 1 / span 6; }
+.pf-chapter--right .pf-media { grid-column: 8 / -1; }
+.pf-chapter--left .pf-text { grid-column: 7 / -1; grid-row: 1; }
+.pf-chapter--left .pf-media { grid-column: 1 / span 5; grid-row: 1; }
+.pf-chapter--wide .pf-text { grid-column: 1 / span 8; }
+.pf-chapter--wide .pf-media { grid-column: 1 / -1; }
+.pf-media .piece { max-width: 640px; margin-inline: auto; }
+.pf-chapter--wide .pf-media .piece { max-width: none; }
+
+.pf-values-section { display: grid; gap: var(--s12); }
+.pf-values { list-style: none; border-top: 1px solid var(--rule-dark); }
+.pf-values li {
+  display: grid; grid-template-columns: 6ch minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s6); align-items: baseline;
+  padding-block: var(--s8); border-bottom: 1px solid var(--rule-dark);
+}
+.pf-values-quote { max-width: 32ch; }
+
+.pf-collab { position: relative; overflow: hidden; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s6); row-gap: var(--s16); }
+.pf-collab-copy { grid-column: 1 / span 7; display: grid; gap: var(--s6); align-content: start; position: relative; }
+.pf-collab-copy .t-lead { max-width: 40ch; }
+.pf-build { list-style: none; display: grid; gap: var(--s3); }
+.pf-sign { grid-column: 9 / -1; display: grid; gap: var(--s4); align-content: end; justify-items: start; position: relative; }
+.pf-closing { grid-column: 1 / -1; position: relative; }
+
+@media (max-width: 1023px) {
+  .pf-chapter--right .pf-text, .pf-chapter--left .pf-text, .pf-chapter--wide .pf-text,
+  .pf-chapter--right .pf-media, .pf-chapter--left .pf-media, .pf-chapter--wide .pf-media { grid-column: 1 / -1; grid-row: auto; }
+  .pf-collab-copy, .pf-sign { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .pf-values li { grid-template-columns: 4ch 1fr; }
+  .pf-values li .t-body { grid-column: 2; }
+  .pf-media .piece { max-width: none; }
+}

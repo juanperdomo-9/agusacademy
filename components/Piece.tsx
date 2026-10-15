@@ -11,16 +11,17 @@ type Props = {
   video?: { src: string; start?: number; end?: number }; // clip mudo en loop; `src` queda como póster
   placeholder?: string;
   tall?: boolean;
+  ratio?: string; // aspect-ratio propio de la foto (ej. "3 / 2")
   priority?: boolean;
   className?: string;
 };
 
 // Pieza numerada: una copia fotográfica con borde hueso.
 // Sin `src` muestra un espacio reservado con el texto de `placeholder`.
-export default function Piece({ n, name, note, src, alt = "", focus, parallax, video, placeholder, tall, priority, className = "" }: Props) {
+export default function Piece({ n, name, note, src, alt = "", focus, parallax, video, placeholder, tall, ratio, priority, className = "" }: Props) {
   return (
     <figure className={`piece ${className}`}>
-      <div className={`piece-media ${tall ? "piece-media--tall" : ""}`}>
+      <div className={`piece-media ${tall ? "piece-media--tall" : ""}`} style={ratio ? { aspectRatio: ratio } : undefined}>
         {video && src ? (
           <AutoVideo src={video.src} poster={src} focus={focus} start={video.start} end={video.end} />
         ) : src ? (
