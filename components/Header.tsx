@@ -38,7 +38,7 @@ export default function Header() {
         <output className="t-label" aria-live="off">
           {pad(current + 1)} / {pad(sections.length)}
         </output>
-        <a href="#inscripcion" className="header-cta t-label">Inscribirme</a>
+        <a href="#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
       </nav>
     </header>
   );

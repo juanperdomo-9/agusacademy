@@ -232,7 +232,8 @@ Papel hueso a todo el ancho con texto carbón: precio en Display, los datos fijo
 Fondo carbón transparente arriba, que pasa a Carbón Alto al scrollear. Monograma y marca a la izquierda, e índice «0X / 08» con el botón a la derecha.
 
 ### Motion
-- Curva base `cubic-bezier(.25, 1, .5, 1)`; duraciones de 180ms (hover), 320ms (pasos y dígitos) y 600ms (pieza que cae).
+- **Curvas (tokens en `:root`):** `--ease-out` cubic-bezier(0.23, 1, 0.32, 1) para todo lo de interfaz; `--ease-in-out` cubic-bezier(0.77, 0, 0.175, 1) para movimiento en pantalla; `--ease-settle` cubic-bezier(0.3, 1.3, 0.5, 1) para el paso con asentamiento (dígitos, piezas que caen, sello). Duraciones: `--t-press` 120ms (presionar), `--t-hover` 280ms (relleno de botones), 200ms (dígito del contador), 200/260ms (cabecera que aparece/se esconde), 600ms (pieza que cae).
+- **Botones:** el texto usa `mix-blend-mode: difference` con color #FBF9F2 (hueso + carbón), así se invierte exactamente en el borde del relleno. El relleno solo se activa con mouse (`hover: hover` y `pointer: fine`).
 - **Firma: «Completar el método».** En desktop, la sección del curso mide 100vh + 6×38vh y la doble página queda fija: el scroll reparte los seis módulos, que caen desde arriba girando, pasan apenas y se asientan (600ms). Si se vuelve hacia arriba, se despegan. En tablet y celular, cada pieza cae cuando su casillero entra al 80% de la pantalla. El indicador «Módulos N/6» y el índice acompañan. Sin JS o con movimiento reducido, todas las piezas aparecen pegadas.
 - **Scroll suave:** Lenis (lerp 0.1). Los anclajes compensan la cabecera.
 - **Pasada en titulares:** todo titular Display fuera del hero entra una sola vez con la pasada de máquina (se revela de abajo hacia arriba con una línea fina) cuando su contenedor asoma.

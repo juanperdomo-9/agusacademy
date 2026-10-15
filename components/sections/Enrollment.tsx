@@ -17,7 +17,7 @@ export default function Enrollment() {
             {offerFacts.map((f) => <li key={f}>{f}</li>)}
           </ol>
           <p className="t-body">{enrollment.guarantee}</p>
-          <a className="btn btn--dark" href={site.checkoutUrl}>{enrollment.cta}</a>
+          <a className="btn btn--dark" href={site.checkoutUrl}><span className="btn-label">{enrollment.cta}</span></a>
         </div>
       </div>
     </section>

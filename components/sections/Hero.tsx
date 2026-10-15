@@ -30,7 +30,7 @@ export default function Hero() {
           <p className="t-lead">{hero.lead}</p>
           <Countdown label={hero.countdownLabel} />
           <div className="hero-actions">
-            <a className="btn" href={site.checkoutUrl}>{hero.cta}</a>
+            <a className="btn" href={site.checkoutUrl}><span className="btn-label">{hero.cta}</span></a>
             <a className="link-quiet t-note" href="#curso">{hero.secondary}</a>
           </div>
           <OfferFacts />

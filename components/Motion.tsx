@@ -11,21 +11,16 @@ const REVEAL = [
   ".enroll-price > *", ".enroll-detail > *", ".faq-list details",
 ].join(",");
 
-// Capa de movimiento de todo el sitio. Sin JS o con movimiento reducido, nada se oculta ni se mueve.
+// Capa de movimiento de todo el sitio. Sin JS, nada se oculta.
+// Con movimiento reducido: sin scroll suave, parallax ni desplazamientos; las entradas son solo un fundido.
 export default function Motion() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const root = document.documentElement;
     root.classList.add("motion");
+    if (reduced) root.classList.add("reduce-motion");
 
-    // 1. Scroll suave.
-    const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -64 } });
-    let raf = requestAnimationFrame(function loop(t) {
-      lenis.raf(t);
-      raf = requestAnimationFrame(loop);
-    });
-
-    // 2. Entradas: titulares con la pasada de máquina, el resto sube en cascada.
+    // 1. Entradas: titulares con la pasada de máquina, el resto sube en cascada.
     // Se comprueba en cada movimiento de scroll (no con IntersectionObserver): un titular
     // recortado no tiene área visible, y el observador además se pierde entradas en scrolls rápidos.
     type Pending = { probe: Element; targets: HTMLElement[] };
@@ -65,17 +60,38 @@ export default function Motion() {
       }
     };
 
+    if (reduced) {
+      const onNativeScroll = () => {
+        if (pending.length) checkReveals();
+      };
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
+      checkReveals();
+      return () => {
+        window.removeEventListener("scroll", onNativeScroll);
+        root.classList.remove("motion", "reduce-motion");
+      };
+    }
+
+    // 2. Scroll suave.
+    const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -64 } });
+    let raf = requestAnimationFrame(function loop(t) {
+      lenis.raf(t);
+      raf = requestAnimationFrame(loop);
+    });
+
     // 3. Parallax: cada foto se desplaza a su propia velocidad.
+    // Primero se miden todas y después se escriben, para no forzar un recálculo por cada foto.
     const layers = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
     const parallax = () => {
       const vh = window.innerHeight;
-      for (const el of layers) {
-        const r = el.parentElement!.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > vh + 200) continue;
+      const rects = layers.map((el) => el.parentElement!.getBoundingClientRect());
+      layers.forEach((el, i) => {
+        const r = rects[i];
+        if (r.bottom < -200 || r.top > vh + 200) return;
         const speed = parseFloat(el.dataset.parallax || "0");
         const offset = (r.top + r.height / 2 - vh / 2) * speed;
         el.style.translate = `0 ${offset.toFixed(1)}px`;
-      }
+      });
     };
 
     // 4. Cabecera: se esconde al bajar y vuelve al subir.

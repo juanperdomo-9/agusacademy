@@ -29,7 +29,7 @@ export default function MobileCta() {
   return (
     <div className="mobile-cta" data-visible={visible} aria-hidden={!visible}>
       <span className="t-note">{offerFacts[0]}</span>
-      <a className="btn" href={site.checkoutUrl} tabIndex={visible ? 0 : -1}>Inscribirme</a>
+      <a className="btn" href={site.checkoutUrl} tabIndex={visible ? 0 : -1}><span className="btn-label">Inscribirme</span></a>
     </div>
   );
 }
