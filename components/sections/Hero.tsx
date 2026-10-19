@@ -49,6 +49,10 @@ export default function Hero() {
     const svgPieces = Array.from(svg.querySelectorAll<SVGGElement>("g[data-i]"));
     const svgGroup = svg.querySelector<SVGGElement>("g.stage-svg-group")!;
     const svgStart = performance.now();
+    // La posición del logo de la cabecera se mide solo al cambiar el tamaño, no en cada cuadro.
+    let hrCache = headerMono?.getBoundingClientRect();
+    const measure = () => { hrCache = headerMono?.getBoundingClientRect(); };
+    addEventListener("resize", measure);
     const fine = matchMedia("(pointer: fine)").matches;
     const narrow = () => window.innerWidth < 768;
 
@@ -94,7 +98,7 @@ export default function Hero() {
       root.dataset.heroLogo = done ? "flat" : "3d";
       canvas.style.opacity = done ? "0" : "1";
       // Monograma SVG (celular, y en escritorio hasta que llega el 3D): mismas piezas y mismo recorrido, en 2D.
-      const hr = headerMono?.getBoundingClientRect();
+      const hr = hrCache;
       if (hr) {
         const nw = narrow();
         const S = Math.min(innerHeight * 0.68, (innerWidth * 0.8) / MONOGRAM_ASPECT) * (0.82 + 0.18 * intro) * (nw ? 1 - 0.38 * open : 1);
@@ -154,6 +158,7 @@ export default function Hero() {
       io.disconnect();
       removeEventListener("pointermove", onMove);
       removeEventListener("resize", onResize);
+      removeEventListener("resize", measure);
       scene?.dispose();
       delete root.dataset.heroLogo;
     };

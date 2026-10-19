@@ -13,7 +13,7 @@ export type SceneFrame = {
 
 export function createMonogramScene(canvas: HTMLCanvasElement, narrow: boolean) {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !narrow, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, narrow ? 1.25 : 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, narrow ? 1 : 1.25));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
@@ -47,7 +47,7 @@ export function createMonogramScene(canvas: HTMLCanvasElement, narrow: boolean) 
 
   // Fondo vivo: pelitos cortados (curvas de 3 tramos) y polvo. Menos cantidad en celular.
   const rand = (a: number, b: number) => a + Math.random() * (b - a);
-  const HAIRS = narrow ? 140 : 340, DUST = narrow ? 220 : 600, SEG = 3;
+  const HAIRS = narrow ? 100 : 220, DUST = narrow ? 150 : 360, SEG = 3;
   const hairPos = new Float32Array(HAIRS * SEG * 6);
   const hairBase = Array.from({ length: HAIRS }, () => {
     const len = rand(0.05, 0.16), ang = rand(0, Math.PI * 2), bend = rand(-1.4, 1.4), tilt = rand(-0.6, 0.6);
