@@ -5,7 +5,7 @@ services:
   - type: web
     name: agus-martin-academy
     runtime: static
-    branch: modo-show
+    branch: master
     buildCommand: npm ci && npm run build
     staticPublishPath: out
     pullRequestPreviewsEnabled: false
