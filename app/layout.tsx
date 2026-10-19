@@ -12,6 +12,8 @@ const archivo = Archivo({
 export const metadata: Metadata = {
   title: "Agus Martín Academy — Curso online de barbería",
   description: "El método completo de Agus Martín para dominar el fade, la tijera y la terminación.",
+  // Íconos con dirección limpia (sin ?query): Render no servía /icon.png?icon...
+  icons: { icon: "/favicon.png", apple: "/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
