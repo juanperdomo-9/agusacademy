@@ -9,6 +9,10 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: out
     pullRequestPreviewsEnabled: false
+    envVars:
+      # Next.js 16 necesita Node 20.9 o más.
+      - key: NODE_VERSION
+        value: "22"
     headers:
       # Los archivos de _next/static tienen hash en el nombre: se pueden cachear para siempre.
       - path: /_next/static/*
