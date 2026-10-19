@@ -3,6 +3,7 @@ import Products from "@/components/sections/Products";
 import Motion from "@/components/Motion";
 import Cursor from "@/components/Cursor";
 import HeaderCountdown from "@/components/HeaderCountdown";
+import SiteFooter from "@/components/SiteFooter";
 import { site } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -27,11 +28,7 @@ export default function TiendaPage() {
       <main className="tienda">
         <Products />
       </main>
-      <footer className="footer wrap">
-        <img className="footer-logo" src="/brand/logo-hueso.png" alt={site.brand} width={935} height={617} loading="lazy" />
-        <a className="t-label" href="/">Volver a la academia</a>
-        <span className="t-note t-soft">Diseño y desarrollo web: Juan Perdomo</span>
-      </footer>
+      <SiteFooter />
       <Motion />
       <Cursor />
     </>
