@@ -2,14 +2,14 @@ import { products } from "@/lib/content";
 
 export default function Products() {
   return (
-    <section id="productos" className="products section wrap" aria-labelledby="products-title">
+    <section id="tienda" className="products section wrap" aria-labelledby="products-title">
       <div className="products-head">
-        <h2 id="products-title" className="t-display">{products.title}</h2>
+        <h1 id="products-title" className="t-display">{products.title}</h1>
         <p className="t-lead">{products.lead}</p>
       </div>
       <ul className="products-grid">
         {products.items.map((p, i) => (
-          <li key={p.id} className="product">
+          <li key={p.id} id={p.id} className="product" data-cursor="Comprar">
             <figure className="piece product-piece">
               <div className="piece-media product-media">
                 <img src={p.image} alt={`${p.name} Forma Essent`} width={1200} height={1500} loading="lazy" />

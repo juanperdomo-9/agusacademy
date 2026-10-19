@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Piece from "@/components/Piece";
 import Motion from "@/components/Motion";
+import Cursor from "@/components/Cursor";
 import { portfolioHero, chapters, values, collab } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
@@ -119,6 +120,7 @@ export default function PortfolioPage() {
         <a className="t-label" href="/">Volver a la academia</a>
       </footer>
       <Motion />
+      <Cursor />
     </>
   );
 }

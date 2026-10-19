@@ -4,7 +4,8 @@ import Motion from "@/components/Motion";
 import Hero from "@/components/sections/Hero";
 import Work from "@/components/sections/Work";
 import Course from "@/components/sections/Course";
-import Products from "@/components/sections/Products";
+import ShopTeaser from "@/components/sections/ShopTeaser";
+import Cursor from "@/components/Cursor";
 import Extras from "@/components/sections/Extras";
 import Agus from "@/components/sections/Agus";
 import Students from "@/components/sections/Students";
@@ -19,7 +20,7 @@ export default function Home() {
         <Hero />
         <Work />
         <Course />
-        <Products />
+        <ShopTeaser />
         <Extras />
         <Agus />
         <Students />
@@ -28,6 +29,7 @@ export default function Home() {
       </main>
       <MobileCta />
       <Motion />
+      <Cursor />
     </>
   );
 }

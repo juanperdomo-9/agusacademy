@@ -1,0 +1,27 @@
+# Render Blueprint: sitio estático (Next.js con output "export" → carpeta out/).
+# En Render: New → Blueprint → elegir este repo. Cada push a la rama publica solo.
+# Cuando exista el área de alumnos con login (Supabase), esto pasa a un Web Service.
+services:
+  - type: web
+    name: agus-martin-academy
+    runtime: static
+    branch: modo-show
+    buildCommand: npm ci && npm run build
+    staticPublishPath: out
+    pullRequestPreviewsEnabled: false
+    headers:
+      # Los archivos de _next/static tienen hash en el nombre: se pueden cachear para siempre.
+      - path: /_next/static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+    routes:
+      # Sin barra final también abre el portfolio y la tienda.
+      - type: redirect
+        source: /portfolio
+        destination: /portfolio/
+      - type: redirect
+        source: /tienda
+        destination: /tienda/

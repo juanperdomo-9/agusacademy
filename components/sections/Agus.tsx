@@ -1,5 +1,6 @@
 import { agus } from "@/lib/content";
 import Piece from "@/components/Piece";
+import TourCities from "@/components/TourCities";
 
 export default function Agus() {
   const { tour } = agus;
@@ -32,11 +33,7 @@ export default function Agus() {
           <h3 id="tour-title" className="t-display">{tour.title}</h3>
           <p className="t-lead">{tour.lead}</p>
         </div>
-        <ol className="tour-cities" aria-label="Ciudades de la gira">
-          {tour.cities.map((city) => (
-            <li key={city} className="tour-city">{city}</li>
-          ))}
-        </ol>
+        <TourCities cities={tour.cities} />
         <dl className="tour-facts">
           {tour.facts.map((f) => (
             <div key={f.label}>

@@ -11,7 +11,7 @@ export default function Work() {
       <p className="work-swipe t-note">Deslizá para ver los tres cortes</p>
       <ul className="work-gallery" aria-label="Cortes de Agus">
         {work.cuts.map((c, i) => (
-          <li key={c.n} className={`work-item work-item--${c.n}`}>
+          <li key={c.n} className={`work-item work-item--${c.n}`} data-cursor="Ver">
             <Piece n={c.n} name={c.technique} src={c.src} focus={c.focus} parallax={[0.04, 0.09, 0.06][i]} video={"video" in c ? c.video : undefined} alt={`Corte terminado por Agus: ${c.technique}`} />
           </li>
         ))}

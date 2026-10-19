@@ -23,7 +23,7 @@ export default function Faq() {
         <img className="site-footer-logo" src="/brand/logo-hueso.png" alt={site.brand} width={935} height={617} loading="lazy" />
         <nav className="site-footer-nav" aria-label="Pie">
           <a className="t-label" href="#curso">El curso</a>
-          <a className="t-label" href="#productos">Productos</a>
+          <a className="t-label" href="/tienda/">Tienda</a>
           <a className="t-label" href="/portfolio/">Portfolio</a>
           <a className="t-label" href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
         </nav>

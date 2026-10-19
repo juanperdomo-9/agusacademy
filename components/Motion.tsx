@@ -7,7 +7,7 @@ import Lenis from "lenis";
 const REVEAL = [
   ".t-lead", ".work-item", ".work-more",
   ".extras-list li", ".cert", ".cert-try", ".for-who-list li", ".agus-photo",
-  ".agus-story > *", ".tour-city", ".tour-facts > *", ".testimonial",
+  ".agus-story > *", ".tour-facts > *", ".testimonial",
   ".enroll-price > *", ".enroll-detail > *", ".faq-list details",
   ".product", ".students-photo", ".site-footer-word",
   ".pf-media", ".pf-text > *", ".pf-values li", ".pf-collab-copy > *", ".pf-sign > *",

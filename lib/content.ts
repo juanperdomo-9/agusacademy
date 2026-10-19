@@ -14,7 +14,7 @@ export const sections = [
   { id: "inicio", label: "Inicio" },
   { id: "trabajo", label: "El trabajo" },
   { id: "curso", label: "El curso" },
-  { id: "productos", label: "Productos" },
+  { id: "productos", label: "Tienda" },
   { id: "extras", label: "Extras" },
   { id: "agus", label: "Quién enseña" },
   { id: "alumnos", label: "Alumnos" },

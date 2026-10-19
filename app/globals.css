@@ -490,8 +490,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .tour-head { grid-column: 1 / span 4; display: grid; gap: var(--s6); align-content: start; }
 .tour-head .t-lead { color: var(--silver); }
+.tour-board { grid-column: 5 / -1; display: grid; gap: var(--s6); }
 .tour-cities {
-  grid-column: 5 / -1; list-style: none;
+  grid-column: auto; list-style: none;
   font-size: clamp(1.75rem, 3.2vw, 3.25rem); font-weight: 600; font-variation-settings: var(--w-wide);
   text-transform: uppercase; line-height: 1.12; letter-spacing: 0.01em;
 }
@@ -822,3 +823,52 @@ html[data-hero-logo="3d"] .header-mono { opacity: 0; }
   .stage-row .facts { display: none; } /* los datos de la oferta siguen en la barra fija y en Inscripción */
   .stage-row .countdown-digits { gap: var(--s4); }
 }
+
+/* ---------- Modo show: detalles ---------- */
+/* «De gira»: ciudades que se encienden y contador grande. */
+.tour-count { display: flex; align-items: baseline; gap: var(--s3); font-weight: 600; font-variation-settings: var(--w-wide); font-variant-numeric: tabular-nums; }
+.tour-count-n { font-size: clamp(4rem, 10vw, 9rem); line-height: .85; }
+.tour-count-of { font-size: var(--fs-headline); color: var(--ash); }
+.tour-city { transition: color 400ms var(--ease-out); }
+.tour-city[data-lit="false"] { color: var(--rule-dark); }
+.tour-city[data-lit="true"] { color: var(--bone); }
+
+/* Cursor propio (solo con mouse). */
+.cursor { display: none; }
+html.has-cursor .cursor {
+  display: grid; place-items: center; position: fixed; left: 0; top: 0; z-index: 100; pointer-events: none;
+  width: 0; height: 0;
+}
+html.has-cursor .cursor::before {
+  content: ""; position: absolute; width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--bone);
+  mix-blend-mode: difference; transition: width 260ms var(--ease-out), height 260ms var(--ease-out), background 260ms var(--ease-out);
+}
+html.has-cursor .cursor[data-state="link"]::before { width: 44px; height: 44px; }
+html.has-cursor .cursor[data-state="label"]::before { width: 92px; height: 92px; background: var(--bone); border-color: var(--bone); mix-blend-mode: normal; }
+.cursor-label { position: relative; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--coal); opacity: 0; transition: opacity 200ms var(--ease-out); }
+html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
+/* Botones magnéticos: vuelven suave a su lugar. */
+.btn, .header-cta { transition: scale var(--t-press) var(--ease-out), translate 380ms var(--ease-out); }
+
+/* Transición entre páginas (navegadores con View Transitions): fundido con leve subida. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out 260ms var(--ease-out) both; }
+::view-transition-new(root) { animation: vt-in 420ms var(--ease-out) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(24px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
+
+/* Aviso de tienda en la home. */
+.shop-teaser { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s6); row-gap: var(--s12); align-items: center; }
+.shop-teaser-copy { grid-column: 1 / span 5; display: grid; gap: var(--s6); justify-items: start; }
+.shop-teaser-copy .t-lead { color: var(--silver); }
+.shop-teaser-row { grid-column: 7 / -1; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s4); }
+.shop-teaser-item { display: grid; gap: var(--s3); text-decoration: none; color: var(--silver); }
+.shop-teaser-item img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; transition: transform 600ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .shop-teaser-item:hover img { transform: translateY(-6px); } .shop-teaser-item:hover { color: var(--bone); } }
+.tienda { padding-top: var(--header-h); }
+@media (max-width: 1023px) {
+  .shop-teaser-copy, .shop-teaser-row { grid-column: 1 / -1; }
+  .tour-board { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) { .shop-teaser-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
