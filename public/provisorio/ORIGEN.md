@@ -19,4 +19,4 @@ Descargadas el 2026-10-15 del Instagram público de Agus Martin (@agusmartiin_),
 
 corte-01 (reel Deari-NO5te) se descargó y se descartó: tiene subtítulos quemados y el video ocupa solo una franja.
 
-VP9 no se reproduce en todos los iPhone: ahí se ve la foto (póster). Los clips definitivos deben llegar en MP4 H.264, de 6 a 10 segundos.
+Convertido a H.264 (segundos 6 a 28) para que se reproduzca en iPhone. Los clips definitivos deben llegar en MP4 H.264, de 6 a 10 segundos.

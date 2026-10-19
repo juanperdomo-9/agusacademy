@@ -919,3 +919,4 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
   .sf-bottom { flex-direction: column; }
 }
 .sf .header-count-label { display: inline; }
+@media (max-width: 1023px) { .enroll-grid { grid-template-columns: minmax(0, 1fr); } }
