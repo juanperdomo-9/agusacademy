@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   // /portfolio se genera como portfolio/index.html: abre en cualquier hosting estático.
   trailingSlash: true,
+  // CSS dentro del HTML: Render no servía el archivo .css (404) y además evita una petición.
+  experimental: { inlineCss: true },
 };
 
 export default nextConfig;
