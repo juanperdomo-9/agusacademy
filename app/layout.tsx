@@ -20,7 +20,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={archivo.variable}>
+    <html lang="es" className={archivo.variable} suppressHydrationWarning>
+      <head>
+        {/* Antes de pintar: si el hero va a ser animado, se arranca en su estado inicial (sin parpadeo). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(location.pathname==='/'&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.classList.add('hero-live');d.dataset.heroLogo='3d'}}catch(e){}",
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

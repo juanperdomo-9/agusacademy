@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prototipo C · El monograma se arma</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet" />
+<style>
+  :root { --coal:#0f0f0e; --bone:#eceae4; --silver:#a7a6a1; --rule:#2e2e2b; --ease:cubic-bezier(.23,1,.32,1); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { background:var(--coal); color:var(--bone); font-family:Archivo, Arial, sans-serif; }
+  .label { font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; font-variation-settings:"wdth" 125; }
+  header { position:fixed; inset:0 0 auto 0; height:64px; z-index:10; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,56px); }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand img { height:28px; width:auto; opacity:0; transition:opacity 240ms var(--ease); }
+  .brand img.is-on { opacity:1; }
+  .cta { background:var(--bone); color:var(--coal); padding:10px 17px; }
+
+  /* El escenario: 320vh de recorrido, la escena queda fija. */
+  .stage { height:320vh; position:relative; }
+  .sticky { position:sticky; top:0; height:100vh; overflow:hidden; --mx:50%; --my:0%; }
+  /* Foco de escenario desde arriba que sigue un poco al mouse, y grano de película. */
+  .spot { position:absolute; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(42% 70% at var(--mx) -8%, rgba(236,234,228,.16), rgba(236,234,228,.05) 45%, transparent 72%),
+      radial-gradient(120% 80% at 50% 120%, rgba(0,0,0,.6), transparent 60%); }
+  .grain { position:absolute; inset:-50%; z-index:4; pointer-events:none; opacity:.08; mix-blend-mode:overlay;
+    background:url("../../public/texturas/grano.png") repeat; background-size:256px; animation:grain 1s steps(6) infinite; }
+  @keyframes grain { 0%{transform:translate(0,0)} 33%{transform:translate(-3%,2%)} 66%{transform:translate(2%,-3%)} 100%{transform:translate(0,0)} }
+  @media (prefers-reduced-motion: reduce) { .grain { animation:none; } }
+  .photo { position:absolute; inset:0; z-index:1; opacity:0; transform:scale(1.25); will-change:transform,opacity; }
+  .photo img { width:100%; height:100%; object-fit:cover; object-position:50% 30%; filter:grayscale(1) contrast(.95) brightness(.62); }
+  .photo::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(15,15,14,.92), rgba(15,15,14,.15) 55%, rgba(15,15,14,.5)); }
+  #gl { position:absolute; inset:0; width:100%; height:100%; z-index:2; pointer-events:none; }
+  .copy { position:absolute; left:clamp(16px,4vw,56px); right:clamp(16px,4vw,56px); bottom:clamp(32px,7vh,72px); z-index:3; display:grid; gap:24px; max-width:1100px; }
+  h1 { font-size:clamp(2.5rem,7vw,7rem); font-weight:600; font-variation-settings:"wdth" 125; line-height:.98; text-transform:uppercase; letter-spacing:.005em; }
+  h1 .line { display:block; overflow:hidden; padding-top:.1em; margin-top:-.1em; }
+  h1 .line > span { display:inline-block; transform:translateY(105%); will-change:transform; }
+  .row { display:flex; flex-wrap:wrap; align-items:center; gap:24px 40px; opacity:0; transform:translateY(20px); }
+  .lead { font-size:1.25rem; line-height:1.5; max-width:38ch; }
+  .btn { background:var(--bone); color:var(--coal); padding:20px 36px; font-size:1.125rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-variation-settings:"wdth" 115; }
+  .hint { position:absolute; left:50%; bottom:28px; transform:translateX(-50%); z-index:3; color:var(--silver); }
+  .next { min-height:100vh; padding:160px clamp(16px,4vw,56px); border-top:1px solid var(--rule); }
+  .next h2 { font-size:clamp(2.25rem,5.2vw,5.5rem); font-weight:600; font-variation-settings:"wdth" 125; text-transform:uppercase; }
+  .next p { color:var(--silver); margin-top:24px; max-width:40ch; font-size:1.25rem; line-height:1.5; }
+  .note { position:fixed; right:16px; bottom:16px; z-index:11; font-size:12px; color:var(--silver); background:#1c1c1a; padding:8px 12px; letter-spacing:.06em; }
+  @media (max-width:767px) { header .label:not(.cta) { display:none; } .copy { gap:16px; } .lead { font-size:1.0625rem; } .btn { width:100%; text-align:center; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img id="headerMono" src="../../public/brand/monograma-hueso.png" alt="" /><span class="label">Agus Martín Academy</span></div>
+  <span class="label cta">Inscribirme</span>
+</header>
+
+<section class="stage" id="stage">
+  <div class="sticky">
+    <div class="spot" id="spot"></div>
+    <div class="photo" id="photo"><img src="../../public/portfolio/p01.jpeg" alt="Agus Martín" /></div>
+    <canvas id="gl"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="copy">
+      <h1 id="title"><span class="line"><span>Cortá con</span></span><span class="line"><span>método,</span></span><span class="line"><span>no de oído.</span></span></h1>
+      <div class="row" id="row"><p class="lead">El método completo de Agus Martín para dominar el fade, la tijera y la terminación, filmado corte por corte.</p><span class="btn">Inscribirme</span></div>
+    </div>
+    <p class="hint label" id="hint">Scrolleá</p>
+  </div>
+</section>
+<section class="next">
+  <h2>El trabajo habla.</h2>
+  <p>Al terminar el hero, las piezas vuelven a juntarse y quedan como el logo de la cabecera.</p>
+</section>
+<div class="note">Prototipo · opción C · mové el mouse y scrolleá</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+// Las 3 piezas del monograma AM, vectorizadas del logo (alto = 1, centradas).
+const POLYS = [[[0.0086,0.5],[0.0086,-0.4214],[-0.0897,-0.3329],[-0.0921,-0.0799],[-0.355,-0.0799],[-0.2887,-0.0086],[-0.0897,-0.0061],[-0.0921,0.2568],[-0.4066,-0.0799],[-0.527,-0.0799]],[[0.527,0.4337],[0.527,-0.3673],[0.4263,-0.2568],[0.4263,0.1486],[0.414,0.1413],[0.2248,-0.0676],[0.0528,0.129],[0.0528,0.2715],[0.2174,0.0872]],[[0.0528,-0.0479],[0.1855,-0.5],[0.0528,-0.4165]]];
+
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fine = matchMedia("(pointer: fine)").matches;
+const canvas = document.getElementById("gl");
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(devicePixelRatio, fine ? 1.5 : 1.25));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
+camera.position.set(0, 0, 6);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+const key = new THREE.DirectionalLight(0xffffff, 2); key.position.set(2, 3, 4); scene.add(key);
+
+const metal = new THREE.MeshPhysicalMaterial({ color: 0xeceae4, metalness: 1, roughness: 0.28, clearcoat: 0.5, clearcoatRoughness: 0.3, fog: false });
+const group = new THREE.Group();
+scene.add(group);
+// Cada pieza es su propia malla, con su centro propio para girar sobre sí misma.
+const pieces = POLYS.map((poly) => {
+  const shape = new THREE.Shape(poly.map(([x, y]) => new THREE.Vector2(x, y)));
+  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.14, bevelEnabled: true, bevelThickness: 0.016, bevelSize: 0.01, bevelSegments: 3, curveSegments: 1 });
+  geo.computeBoundingBox();
+  const c = new THREE.Vector3(); geo.boundingBox.getCenter(c); geo.translate(-c.x, -c.y, -c.z);
+  const mesh = new THREE.Mesh(geo, metal);
+  const home = new THREE.Vector3(c.x, c.y, 0);
+  mesh.position.copy(home);
+  group.add(mesh);
+  return { mesh, home };
+});
+// Hacia dónde vuela cada pieza al separarse (A a la izquierda, M a la derecha, el corte hacia el frente).
+const AWAY = [
+  { p: new THREE.Vector3(-1.05, 0.12, -0.6), r: new THREE.Euler(0.25, 0.9, 0.18) },
+  { p: new THREE.Vector3(1.0, -0.08, -0.4), r: new THREE.Euler(-0.2, -1.0, -0.12) },
+  { p: new THREE.Vector3(0.28, -0.55, 1.2), r: new THREE.Euler(1.2, 0.5, 0.8) },
+];
+
+// Fondo vivo: pelitos cortados (segmentos finos) y polvo en suspensión, alrededor del monograma.
+const narrowScreen = innerWidth < 768;
+const HAIRS = narrowScreen ? 140 : 340, DUST = narrowScreen ? 220 : 600;
+const SEG = 3; // cada pelito es una curva de 3 tramos
+scene.fog = new THREE.Fog(0x0f0f0e, 4.2, 9); // los del fondo se apagan: da profundidad
+const rand = (a, b) => a + Math.random() * (b - a);
+const hairPos = new Float32Array(HAIRS * SEG * 6), hairBase = [];
+for (let i = 0; i < HAIRS; i++) {
+  const len = rand(0.05, 0.16), ang = rand(0, Math.PI * 2), bend = rand(-1.4, 1.4), tilt = rand(-0.6, 0.6);
+  // Puntos de la curva relativos al centro del pelito.
+  const pts = [];
+  for (let j = 0; j <= SEG; j++) {
+    const u = j / SEG, a = ang + bend * u;
+    pts.push([Math.cos(a) * len * u, Math.sin(a) * len * u, tilt * len * u]);
+  }
+  hairBase.push({ x: rand(-3.4, 3.4), y: rand(-2.3, 2.3), z: rand(-3, 1.6), pts,
+    vy: rand(0.03, 0.1), sway: rand(0.2, 0.8), spin: rand(-0.4, 0.4), ph: rand(0, 6.28) });
+}
+const hairGeo = new THREE.BufferGeometry();
+hairGeo.setAttribute("position", new THREE.BufferAttribute(hairPos, 3));
+const hairMat = new THREE.LineBasicMaterial({ color: 0xe4e1da, transparent: true, opacity: 0.7, depthWrite: false });
+const hairs = new THREE.LineSegments(hairGeo, hairMat);
+const dustPos = new Float32Array(DUST * 3), dustBase = [];
+for (let i = 0; i < DUST; i++) dustBase.push({ x: rand(-3.5, 3.5), y: rand(-2.4, 2.4), z: rand(-3, 1.5), vy: rand(0.01, 0.05), ph: rand(0, 6.28) });
+const dustGeo = new THREE.BufferGeometry();
+dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+const dustMat = new THREE.PointsMaterial({ color: 0xeceae4, size: 0.012, sizeAttenuation: true, transparent: true, opacity: 0.5, depthWrite: false });
+const dust = new THREE.Points(dustGeo, dustMat);
+const atmosphere = new THREE.Group();
+atmosphere.add(hairs, dust);
+scene.add(atmosphere);
+
+function updateAtmosphere(t, open, fade) {
+  const wrap = (v) => ((v + 2.4) % 4.8 + 4.8) % 4.8 - 2.4;
+  const burst = 1 + open * 1.1; // al separarse el monograma, todo se abre hacia afuera
+  for (let i = 0; i < HAIRS; i++) {
+    const h = hairBase[i];
+    const y = wrap(h.y - t * h.vy), x = h.x + Math.sin(t * h.sway + h.ph) * 0.08;
+    const c = Math.cos(t * h.spin), sn = Math.sin(t * h.spin); // giran lento mientras caen
+    for (let j = 0; j < SEG; j++) {
+      const a = h.pts[j], b = h.pts[j + 1], k = (i * SEG + j) * 6;
+      hairPos[k] = (x + a[0] * c - a[1] * sn) * burst; hairPos[k + 1] = (y + a[0] * sn + a[1] * c) * burst; hairPos[k + 2] = h.z + a[2];
+      hairPos[k + 3] = (x + b[0] * c - b[1] * sn) * burst; hairPos[k + 4] = (y + b[0] * sn + b[1] * c) * burst; hairPos[k + 5] = h.z + b[2];
+    }
+  }
+  hairGeo.attributes.position.needsUpdate = true;
+  for (let i = 0; i < DUST; i++) {
+    const d = dustBase[i], k = i * 3;
+    dustPos[k] = (d.x + Math.sin(t * 0.3 + d.ph) * 0.05) * burst;
+    dustPos[k + 1] = wrap(d.y + t * d.vy) * burst;
+    dustPos[k + 2] = d.z;
+  }
+  dustGeo.attributes.position.needsUpdate = true;
+  hairMat.opacity = 0.7 * fade; dustMat.opacity = 0.5 * fade;
+}
+
+const photo = document.getElementById("photo"), lines = [...document.querySelectorAll("h1 .line > span")];
+const spot = document.getElementById("spot");
+const row = document.getElementById("row"), hint = document.getElementById("hint"), stage = document.getElementById("stage");
+const headerMono = document.getElementById("headerMono");
+
+function resize() {
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  // Tamaño: el monograma ocupa ~68% del alto en desktop y ~80% del ancho en celular.
+  const visH = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+  const visW = visH * camera.aspect;
+  group.userData.base = Math.min(visH * 0.68, (visW * 0.8) / 1.054);
+  group.userData.visH = visH; group.userData.visW = visW;
+}
+resize(); addEventListener("resize", resize);
+
+const tgt = { x: 0, y: 0 }, tilt = { x: 0, y: 0 };
+if (fine && !reduced) addEventListener("pointermove", (e) => { tgt.x = (e.clientY / innerHeight - 0.5) * 0.5; tgt.y = (e.clientX / innerWidth - 0.5) * 0.8; });
+
+const clamp = (v) => Math.min(1, Math.max(0, v));
+const seg = (p, a, b) => clamp((p - a) / (b - a));
+const ease = (t) => 1 - Math.pow(1 - t, 3);
+const inOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const clock = new THREE.Clock();
+
+function frame() {
+  const t = clock.getElapsedTime();
+  // Progreso del escenario: 0 al entrar, 1 cuando la escena fija termina.
+  const r = stage.getBoundingClientRect();
+  const p = reduced ? 0.8 : clamp(-r.top / (r.height - innerHeight));
+  const intro = reduced ? 1 : ease(clamp(t / 1.8));
+  const split = inOut(seg(p, 0.12, 0.62));      // las piezas se separan
+  const merge = inOut(seg(p, 0.86, 1));         // y se vuelven a juntar al salir
+  const open = split * (1 - merge);
+
+  tilt.x += (tgt.x - tilt.x) * 0.07; tilt.y += (tgt.y - tilt.y) * 0.07;
+  const { base, visH, visW } = group.userData;
+  // Destino exacto: el logo de la cabecera, pasado a coordenadas de la escena.
+  const hr = headerMono.getBoundingClientRect();
+  const endX = ((hr.left + hr.width / 2) / innerWidth - 0.5) * visW;
+  const endY = -((hr.top + hr.height / 2) / innerHeight - 0.5) * visH;
+  const endS = (hr.height / innerHeight) * visH;
+  const startS = base * (0.82 + 0.18 * intro);
+  group.scale.setScalar(startS + (endS - startS) * merge);
+  group.position.set(endX * merge, (0.08 * (1 - open) + Math.sin(t * 1.1) * 0.03) * (1 - merge) + endY * merge, 0);
+  group.rotation.set(tilt.x * (1 - merge), (tilt.y + Math.sin(t * 0.5) * 0.06) * (1 - merge) + (1 - intro) * -1.4, 0);
+
+  pieces.forEach((pc, i) => {
+    const a = AWAY[i];
+    // En celular la separación es más corta (la pantalla es angosta) y el corte sube en vez de bajar al botón.
+    const narrow = innerWidth < 768;
+    const sx = narrow ? 0.42 : 1, py = narrow && i === 2 ? 0.62 : a.p.y;
+    pc.mesh.position.set(pc.home.x + a.p.x * sx * open, pc.home.y + py * open, a.p.z * (narrow ? 0.5 : 1) * open);
+    pc.mesh.rotation.set(a.r.x * open + Math.sin(t * 0.8 + i) * 0.05 * open, a.r.y * open, a.r.z * open);
+  });
+
+  // La foto aparece por el hueco que dejan las piezas.
+  const ph = ease(seg(p, 0.18, 0.6));
+  photo.style.opacity = ph;
+  photo.style.transform = `scale(${1.25 - 0.25 * ph})`;
+  // Titular: cada línea sube con su máscara, escalonada.
+  lines.forEach((el, i) => { const v = ease(seg(p, 0.5 + i * 0.06, 0.66 + i * 0.06)); el.style.transform = `translateY(${110 * (1 - v)}%)`; el.style.opacity = v > 0 ? 1 : 0; });
+  const rr = ease(seg(p, 0.7, 0.82));
+  row.style.opacity = rr; row.style.transform = `translateY(${20 * (1 - rr)}px)`;
+  hint.style.opacity = 1 - seg(p, 0.02, 0.1);
+
+  // El fondo vivo se mueve con el mouse (parallax) y se apaga cuando aparece la foto.
+  atmosphere.rotation.set(tilt.x * 0.25, tilt.y * 0.35, 0);
+  updateAtmosphere(reduced ? 0 : t, open, 1 - 0.65 * ph);
+  spot.style.setProperty("--mx", `${50 + tilt.y * 22}%`);
+  spot.style.opacity = 1 - ph * 0.7;
+
+  const done = merge > 0.98;
+  headerMono.classList.toggle("is-on", done);
+  canvas.style.opacity = done ? 0 : 1;
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(frame);
+</script>
+</body>
+</html>

@@ -8,3 +8,8 @@ next-env.d.ts
 .impeccable/questions/
 .impeccable/config.local.json
 .taste-skill/
+# Capturas y mediciones locales (pesadas, no van al repo)
+.impeccable/review/
+.impeccable/refs/
+.impeccable/lighthouse/
+.impeccable/prototypes/*.png

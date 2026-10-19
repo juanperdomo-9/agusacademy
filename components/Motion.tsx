@@ -104,7 +104,9 @@ export default function Motion() {
       if (pending.length) checkReveals();
       // Solo cambia con movimiento real; al frenar, la cabecera mantiene su estado.
       if (header && Math.abs(scroll - last) > 4) {
-        header.classList.toggle("is-hidden", scroll > last && scroll > 240);
+        // No se esconde mientras dura el hero: el monograma viaja hasta su logo.
+        const heroEnd = (document.getElementById("inicio")?.offsetHeight ?? 0) - window.innerHeight;
+        header.classList.toggle("is-hidden", scroll > last && scroll > Math.max(240, heroEnd));
         last = scroll;
       }
     };

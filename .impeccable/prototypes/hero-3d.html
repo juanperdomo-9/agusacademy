@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prototipo · Hero con monograma AM en 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet" />
+<style>
+  :root { --coal:#0f0f0e; --bone:#eceae4; --silver:#a7a6a1; --rule:#2e2e2b; --ease:cubic-bezier(.23,1,.32,1); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { background:var(--coal); }
+  body { background:var(--coal); color:var(--bone); font-family:Archivo, Arial, sans-serif; font-variation-settings:"wdth" 100; }
+  .label { font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; font-variation-settings:"wdth" 125; }
+  header { position:fixed; inset:0 0 auto 0; height:64px; z-index:5; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,56px); background:var(--coal); border-bottom:1px solid var(--rule); }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .brand img { height:28px; width:auto; opacity:0; transition:opacity 240ms var(--ease); }
+  .brand img.is-on { opacity:1; }
+  .cta { background:var(--bone); color:var(--coal); padding:10px 17px; }
+  .hero { min-height:100svh; padding:112px clamp(16px,4vw,56px) 64px; display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); column-gap:24px; align-items:start; position:relative; }
+  .plate { grid-column:1/span 5; background:var(--bone); padding:10px; border-radius:4px; box-shadow:0 2px 0 rgba(0,0,0,.6),0 24px 48px -20px rgba(0,0,0,.8); }
+  .plate img { display:block; width:100%; aspect-ratio:3/4; object-fit:cover; filter:grayscale(1) contrast(.92) brightness(.95); }
+  .plate .foot { display:flex; justify-content:space-between; align-items:end; color:var(--coal); padding:12px 4px 4px; }
+  .num { font-size:clamp(1.75rem,2.6vw,2.5rem); font-weight:500; font-variation-settings:"wdth" 125; line-height:.9; }
+  .side { grid-column:7/-1; display:grid; gap:32px; padding-top:64px; }
+  h1 { font-size:clamp(2.25rem,5.2vw,5.5rem); font-weight:600; font-variation-settings:"wdth" 125; line-height:1; text-transform:uppercase; letter-spacing:.01em; }
+  h1 .line { display:block; overflow:hidden; }
+  h1 .line span { display:inline-block; transform:translateY(105%); animation:rise 1100ms var(--ease) forwards; animation-delay:calc(350ms + var(--i) * 120ms); }
+  @keyframes rise { to { transform:none; } }
+  .lead { font-size:1.25rem; line-height:1.5; max-width:36ch; color:var(--bone); }
+  .btn { justify-self:start; background:var(--bone); color:var(--coal); padding:20px 36px; font-size:1.125rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-variation-settings:"wdth" 115; }
+  .next { min-height:120vh; padding:160px clamp(16px,4vw,56px); }
+  .next h2 { font-size:clamp(2.25rem,5.2vw,5.5rem); font-weight:600; font-variation-settings:"wdth" 125; text-transform:uppercase; }
+  .next p { color:var(--silver); margin-top:24px; max-width:40ch; font-size:1.25rem; line-height:1.5; }
+  /* El lienzo 3D va encima de todo pero no captura el mouse. */
+  /* El 3D va detrás del texto (no lo tapa) y sobre la foto; durante el viaje a la cabecera pasa al frente. */
+  #gl { position:fixed; inset:0; width:100vw; height:100vh; z-index:1; pointer-events:none; }
+  #gl.is-front { z-index:6; }
+  .side { position:relative; z-index:2; }
+  .note { position:fixed; right:16px; bottom:16px; z-index:6; font-size:12px; color:var(--silver); background:#1c1c1a; padding:8px 12px; letter-spacing:.06em; }
+  @media (max-width:767px) {
+    .hero { grid-template-columns:1fr; padding-top:72px; }
+    .plate, .side { grid-column:1; }
+    .side { padding-top:24px; gap:20px; }
+    .brand .label, header .label:not(.cta) { display:none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img id="headerMono" src="../../public/brand/monograma-hueso.png" alt="" /><span class="label">Agus Martín Academy</span></div>
+  <span class="label cta">Inscribirme</span>
+</header>
+
+<section class="hero">
+  <figure class="plate" id="plate">
+    <img src="../../public/provisorio/agus-cortando.jpg" alt="" />
+    <figcaption class="foot"><span class="label">Agus Martín</span><span class="num">00</span></figcaption>
+  </figure>
+  <div class="side">
+    <h1><span class="line"><span style="--i:0">Cortá con</span></span><span class="line"><span style="--i:1">método,</span></span><span class="line"><span style="--i:2">no de oído.</span></span></h1>
+    <p class="lead">El método completo de Agus Martín para dominar el fade, la tijera y la terminación, filmado corte por corte.</p>
+    <span class="btn">Inscribirme</span>
+  </div>
+</section>
+<section class="next">
+  <h2>El trabajo habla.</h2>
+  <p>Al bajar, el monograma gira y viaja hasta convertirse en el logo de la cabecera.</p>
+</section>
+<canvas id="gl"></canvas>
+<div class="note">Prototipo · opción A · mové el mouse y scrolleá</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+// Polígonos del monograma AM, vectorizados del logo (alto = 1, centrados).
+const POLYS = [[[0.0086,0.5],[0.0086,-0.4214],[-0.0897,-0.3329],[-0.0921,-0.0799],[-0.355,-0.0799],[-0.2887,-0.0086],[-0.0897,-0.0061],[-0.0921,0.2568],[-0.4066,-0.0799],[-0.527,-0.0799]],[[0.527,0.4337],[0.527,-0.3673],[0.4263,-0.2568],[0.4263,0.1486],[0.414,0.1413],[0.2248,-0.0676],[0.0528,0.129],[0.0528,0.2715],[0.2174,0.0872]],[[0.0528,-0.0479],[0.1855,-0.5],[0.0528,-0.4165]]];
+
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const coarse = matchMedia("(pointer: coarse)").matches;
+const canvas = document.getElementById("gl");
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.25 : 1.5));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+camera.position.set(0, 0, 8);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+// Geometría: cada forma extruida con un bisel fino, como una pieza de metal cortada.
+const shapes = POLYS.map((poly) => new THREE.Shape(poly.map(([x, y]) => new THREE.Vector2(x, y))));
+const geo = new THREE.ExtrudeGeometry(shapes, { depth: 0.16, bevelEnabled: true, bevelThickness: 0.018, bevelSize: 0.012, bevelSegments: 3, curveSegments: 1 });
+geo.center();
+const metal = new THREE.MeshPhysicalMaterial({ color: 0xeceae4, metalness: 1, roughness: 0.32, clearcoat: 0.4, clearcoatRoughness: 0.35 });
+const mono = new THREE.Mesh(geo, metal);
+const pivot = new THREE.Group();
+pivot.add(mono);
+scene.add(pivot);
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 4, 5); scene.add(key);
+const rim = new THREE.DirectionalLight(0xffffff, 0.8); rim.position.set(-4, -2, -3); scene.add(rim);
+
+// Utilidades de pantalla a mundo (plano z = 0).
+const visible = () => { const h = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z; return { h, w: h * camera.aspect }; };
+const toWorld = (px, py) => { const v = visible(); return new THREE.Vector2((px / innerWidth - 0.5) * v.w, -(py / innerHeight - 0.5) * v.h); };
+
+// Pose de inicio (entre la foto y el titular) y pose final (el logo de la cabecera).
+const headerMono = document.getElementById("headerMono");
+let start, end;
+function layout() {
+  renderer.setSize(innerWidth, innerHeight, false);
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  const v = visible();
+  const mobile = innerWidth < 768;
+  // Inicio: apoyado sobre la esquina inferior derecha de la foto, sin tocar la columna de texto.
+  const pr = document.getElementById("plate").getBoundingClientRect();
+  const sizePx = mobile ? pr.width * 0.34 : Math.min(pr.width * 0.46, innerHeight * 0.3);
+  const startPx = [pr.right - sizePx * (mobile ? 0.66 : 0.42), pr.top + window.scrollY + pr.height * 0.74];
+  const r = headerMono.getBoundingClientRect();
+  start = { p: toWorld(...startPx), s: (sizePx / innerHeight) * v.h };
+  end = { p: toWorld(r.left + r.width / 2, r.top + r.height / 2), s: (r.height / innerHeight) * v.h };
+}
+layout();
+addEventListener("resize", layout);
+
+// Mouse: inclinación suave hacia el cursor (solo con puntero fino).
+const target = { x: 0, y: 0 }, tilt = { x: 0, y: 0 };
+if (!coarse && !reduced) addEventListener("pointermove", (e) => { target.x = (e.clientY / innerHeight - 0.5) * 0.6; target.y = (e.clientX / innerWidth - 0.5) * 0.9; });
+
+const ease = (t) => 1 - Math.pow(1 - t, 3);
+const clock = new THREE.Clock();
+function frame() {
+  const t = clock.getElapsedTime();
+  const raw = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.9)));
+  const k = reduced ? 0 : ease(raw);
+  tilt.x += (target.x - tilt.x) * 0.08;
+  tilt.y += (target.y - tilt.y) * 0.08;
+  const idle = reduced ? 0 : (1 - k);
+  // Entrada: aparece girando y se asienta.
+  const intro = reduced ? 1 : ease(Math.min(1, t / 1.6));
+  pivot.position.set(THREE.MathUtils.lerp(start.p.x, end.p.x, k), THREE.MathUtils.lerp(start.p.y, end.p.y, k) + Math.sin(t * 1.2) * 0.04 * idle, 0);
+  pivot.scale.setScalar(THREE.MathUtils.lerp(start.s, end.s, k) * (0.85 + 0.15 * intro));
+  pivot.rotation.set(tilt.x * idle, tilt.y * idle + (1 - intro) * -1.6 + k * Math.PI * 2, 0);
+  // Al llegar a la cabecera, el 3D le pasa la posta al logo plano.
+  const done = k > 0.985;
+  headerMono.classList.toggle("is-on", done || reduced);
+  canvas.classList.toggle("is-front", k > 0.35);
+  canvas.style.opacity = done ? "0" : "1";
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(reduced ? null : frame);
+if (reduced) frame();
+</script>
+</body>
+</html>

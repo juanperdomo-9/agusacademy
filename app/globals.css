@@ -769,3 +769,56 @@ html.reduce-motion [data-parallax] { scale: none; }
   .pf-text { min-width: 0; }
   .pf-text .t-display { font-size: 7vw; }
 }
+
+/* ---------- 01 Hero «El monograma se arma» (modo show) ---------- */
+/* Estado base (sin JS, sin WebGL o con movimiento reducido): hero estático con foto y titular. */
+.stage { position: relative; }
+.stage-sticky { position: relative; min-height: 100svh; overflow: hidden; display: grid; align-items: end; --mx: 50%; }
+.stage-spot { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0;
+  background:
+    radial-gradient(42% 70% at var(--mx) -8%, rgba(236,234,228,.16), rgba(236,234,228,.05) 45%, transparent 72%),
+    radial-gradient(120% 80% at 50% 120%, rgba(0,0,0,.6), transparent 60%); }
+.stage-photo { position: absolute; inset: 0; z-index: 1; will-change: transform, opacity; }
+.stage-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(1) contrast(.95) brightness(.62); }
+.stage-photo::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(15,15,14,.94), rgba(15,15,14,.2) 55%, rgba(15,15,14,.55)); }
+.stage-gl { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: none; }
+.stage-svg { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: none; overflow: visible;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.55)); transition: opacity 400ms var(--ease-out); }
+html.hero-live .stage-svg { display: block; }
+.stage-grain { position: absolute; inset: -50%; z-index: 4; pointer-events: none; opacity: .08; mix-blend-mode: overlay;
+  background: url("/texturas/grano.png") repeat; background-size: 256px; }
+.stage-copy { position: relative; z-index: 3; display: grid; gap: var(--s6);
+  padding-top: calc(var(--header-h) + var(--s12)); padding-bottom: clamp(32px, 7vh, 72px); }
+.stage-title { font-size: clamp(2.5rem, 7vw, 7rem); font-weight: 600; font-variation-settings: var(--w-wide);
+  line-height: .98; text-transform: uppercase; letter-spacing: .005em; max-width: 14ch; }
+.stage-line { display: block; overflow: hidden; padding-top: .1em; margin-top: -.1em; }
+.stage-line > span { display: inline-block; will-change: transform; }
+.stage-row { display: grid; grid-template-columns: minmax(0, 38ch) auto; gap: var(--s6) var(--s16); align-items: end; }
+.stage-row .t-lead { grid-column: 1; }
+.stage-row .countdown { grid-column: 2; grid-row: 1; }
+.stage-row .hero-actions { grid-column: 1; }
+.stage-row .facts { grid-column: 1 / -1; }
+.stage-hint { position: absolute; left: 50%; bottom: 28px; z-index: 3; transform: translateX(-50%); color: var(--silver); display: none; }
+
+/* Modo vivo: el escenario mide 320vh y la escena queda fija; JS mueve todo según el scroll. */
+html.hero-live .stage { height: 320vh; }
+html.hero-live .stage-sticky { position: sticky; top: 0; height: 100vh; min-height: 0; }
+html.hero-live .stage-spot { opacity: 1; }
+html.hero-live .stage-gl, html.hero-live .stage-hint { display: block; }
+html.hero-live .stage-photo { opacity: .22; transform: scale(1.25); }
+html.hero-live .stage-line > span { opacity: 0; transform: translateY(110%); }
+html.hero-live .stage-row { opacity: 0; transform: translateY(20px); }
+html.hero-live .stage-grain { animation: grain 1s steps(6) infinite; }
+@keyframes grain { 0% { transform: translate(0,0); } 33% { transform: translate(-3%,2%); } 66% { transform: translate(2%,-3%); } 100% { transform: translate(0,0); } }
+/* Traspaso con la cabecera: mientras el 3D vive, el logo plano se oculta. */
+html[data-hero-logo="3d"] .header-mono { opacity: 0; }
+.header-mono { transition: opacity 240ms var(--ease-out); }
+
+@media (max-width: 767px) {
+  .stage-row { grid-template-columns: 1fr; gap: var(--s4); }
+  .stage-row .countdown, .stage-row .hero-actions { grid-column: 1; grid-row: auto; }
+  .stage-row .hero-actions { flex-direction: column; align-items: stretch; text-align: center; }
+  .stage-row .facts { display: none; } /* los datos de la oferta siguen en la barra fija y en Inscripción */
+  .stage-row .countdown-digits { gap: var(--s4); }
+}

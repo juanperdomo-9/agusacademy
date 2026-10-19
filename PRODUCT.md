@@ -12,7 +12,9 @@ Next.js (App Router), deploy en Netlify (plan gratuito permite uso comercial; el
 Fase actual: solo la landing de venta. Fase posterior: área de alumnos en la misma web (login, pago, acceso a clases).
 - Pagos: Mercado Pago (a confirmar; el usuario dijo "o después lo decidimos").
 - Clases: videos subidos a YouTube y embebidos en el área de alumnos. Ojo: un video "Privado" de YouTube no se puede embeber para terceros; tiene que ser "No listado", y un link no listado se puede compartir fuera de la web. Decisión aceptada por el cliente; revisar si la piratería se vuelve un problema.
-- Login/base de datos: Supabase propuesto para la fase del área de alumnos, no confirmado.
+- Login/base de datos: **Supabase confirmado** por el cliente (2026-10-19) para la etapa del área de alumnos: login (Supabase Auth), base de datos de alumnos, compras y progreso del curso. No se hace todavía.
+- Hosting: **Render**. Hoy como Static Site (`npm run build` genera `out/`). Cuando exista el área de alumnos con login, pasa a Web Service (Next con servidor) o se suma una API.
+- Deuda de rendimiento (modo show): Lighthouse celular 83 vs 89 antes del hero 3D (LCP simulado 4,6 s; LCP real medido en Chrome 0,36 s). Escritorio 99. Revisar después de la reunión con Agus.
 
 ## Users
 
