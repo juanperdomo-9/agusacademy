@@ -24,7 +24,7 @@ export default function Faq() {
         <nav className="site-footer-nav" aria-label="Pie">
           <a className="t-label" href="#curso">El curso</a>
           <a className="t-label" href="#productos">Productos</a>
-          <a className="t-label" href="/portfolio">Portfolio</a>
+          <a className="t-label" href="/portfolio/">Portfolio</a>
           <a className="t-label" href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
         </nav>
         <p className="site-footer-word" aria-hidden="true">Agus Martín</p>

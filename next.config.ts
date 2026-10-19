@@ -5,6 +5,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "export",
   images: { unoptimized: true },
+  // /portfolio se genera como portfolio/index.html: abre en cualquier hosting estático.
+  trailingSlash: true,
 };
 
 export default nextConfig;
