@@ -49,9 +49,9 @@ export const work = {
   // Nombres de técnica descriptos a partir de la foto: revisar con Agus.
   // `focus` es el object-position: deja fuera textos quemados del reel.
   cuts: [
-    { n: "01", technique: "Mid fade + textura", src: "/provisorio/corte-01.jpg", focus: "50% 45%" },
+    { n: "01", technique: "Mid Fade + textura", src: "/provisorio/corte-01.jpg", focus: "50% 45%" },
     { n: "02", technique: "Taper + movimiento", src: "/provisorio/corte-02.jpg", focus: "50% 22%", video: { src: "/provisorio/corte-02.mp4" } },
-    { n: "03", technique: "Burst fade + textura", src: "/provisorio/corte-03.jpg", focus: "50% 40%" },
+    { n: "03", technique: "Mullet + textura", src: "/provisorio/corte-03.jpg", focus: "50% 40%" },
   ],
   more: "Más cortes en Instagram",
 };
