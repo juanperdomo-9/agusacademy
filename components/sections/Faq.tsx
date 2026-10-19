@@ -31,6 +31,7 @@ export default function Faq() {
         <div className="site-footer-legal t-note t-soft">
           <span>© 2026 {site.brand}</span>
           <span>[Datos legales a confirmar]</span>
+          <span>Diseño y desarrollo web: Juan Perdomo</span>
         </div>
       </footer>
     </>

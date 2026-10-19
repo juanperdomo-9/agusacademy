@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Piece from "@/components/Piece";
 import Motion from "@/components/Motion";
 import Cursor from "@/components/Cursor";
+import HeaderCountdown from "@/components/HeaderCountdown";
 import { portfolioHero, chapters, values, collab } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
@@ -19,8 +20,9 @@ export default function PortfolioPage() {
           <span className="t-label header-name">Agus Martín Academy</span>
         </a>
         <nav className="header-index" aria-label="Portafolio">
-          <span className="t-label">Portafolio 2026</span>
-          <a href="/#curso" className="header-cta t-label"><span className="btn-label">Ver el curso</span></a>
+          <span className="t-label header-section">Portafolio 2026</span>
+          <HeaderCountdown />
+          <a href="/#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
         </nav>
       </header>
 
@@ -118,6 +120,7 @@ export default function PortfolioPage() {
       <footer className="footer wrap">
         <img className="footer-logo" src="/brand/logo-hueso.png" alt="Agus Martín Academy" width={935} height={617} loading="lazy" />
         <a className="t-label" href="/">Volver a la academia</a>
+        <span className="t-note t-soft">Diseño y desarrollo web: Juan Perdomo</span>
       </footer>
       <Motion />
       <Cursor />

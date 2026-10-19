@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { sections, site } from "@/lib/content";
+import HeaderCountdown from "@/components/HeaderCountdown";
 
 export default function Header() {
   const [current, setCurrent] = useState(0);
@@ -34,10 +35,11 @@ export default function Header() {
         <span className="t-label header-name">{site.brand}</span>
       </a>
       <nav className="header-index" aria-label="Secciones">
-        <span className="t-label">{sections[current].label}</span>
-        <output className="t-label" aria-live="off">
+        <span className="t-label header-section">{sections[current].label}</span>
+        <output className="t-label header-output" aria-live="off">
           {pad(current + 1)} / {pad(sections.length)}
         </output>
+        <HeaderCountdown />
         <a href="#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
       </nav>
     </header>

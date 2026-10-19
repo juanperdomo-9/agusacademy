@@ -872,3 +872,15 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
   .tour-board { grid-column: 1 / -1; }
 }
 @media (max-width: 767px) { .shop-teaser-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Contador en la barra: el lanzamiento vence (lleva a la inscripción). */
+.header-count { display: flex; align-items: baseline; gap: var(--s3); text-decoration: none; color: var(--silver); }
+.header-count-value { font-weight: 600; font-variation-settings: var(--w-title); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--bone); font-size: .9375rem; }
+.header-count:hover .header-count-value { text-decoration: underline; text-underline-offset: .3em; }
+@media (max-width: 1200px) { .header-count-label { display: none; } }
+@media (max-width: 1023px) { .header-section { display: none; } }
+@media (max-width: 767px) {
+  .header-output { display: none; } /* en celular el contador ocupa el lugar del índice */
+  .header-count-value { font-size: .8125rem; }
+}
+@media (max-width: 767px) { .site-footer { padding-bottom: calc(var(--s8) + 80px); } }
