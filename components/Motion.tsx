@@ -74,9 +74,12 @@ export default function Motion() {
       };
     }
 
-    // 2. Scroll suave.
-    const lenis = new Lenis({ lerp: 0.1, anchors: { offset: -64 } });
-    let raf = requestAnimationFrame(function loop(t) {
+    // 2. Scroll suave solo con mouse. En pantallas táctiles el scroll nativo ya es suave,
+    // y Lenis peleaba con él (tirones y saltos hacia atrás en el celular).
+    const touch = !window.matchMedia("(pointer: fine)").matches;
+    const lenis = touch ? null : new Lenis({ lerp: 0.1, anchors: { offset: -64 } });
+    let raf = 0;
+    if (lenis) raf = requestAnimationFrame(function loop(t) {
       lenis.raf(t);
       raf = requestAnimationFrame(loop);
     });
@@ -110,13 +113,21 @@ export default function Motion() {
         last = scroll;
       }
     };
-    lenis.on("scroll", onScroll);
+    // En táctil se escucha el scroll nativo, a lo sumo una vez por cuadro.
+    let tick = 0;
+    const onNative = () => {
+      if (!tick) tick = requestAnimationFrame(() => { tick = 0; onScroll({ scroll: window.scrollY }); });
+    };
+    if (lenis) lenis.on("scroll", onScroll);
+    else window.addEventListener("scroll", onNative, { passive: true });
     parallax();
     checkReveals();
 
     return () => {
       cancelAnimationFrame(raf);
-      lenis.destroy();
+      cancelAnimationFrame(tick);
+      window.removeEventListener("scroll", onNative);
+      lenis?.destroy();
       root.classList.remove("motion");
     };
   }, []);

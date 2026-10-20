@@ -787,6 +787,9 @@ html.reduce-motion [data-parallax] { scale: none; }
 .stage-svg { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: none; overflow: visible; opacity: 0;
   transition: opacity 400ms var(--ease-out); will-change: opacity; } /* sin filtro: una sombra difusa por cuadro trababa el celular */
 html.hero-live .stage-svg { display: block; }
+/* Táctil: la entrada del monograma es una animación CSS (gira y crece desde el centro), no un cálculo por cuadro. */
+html.hero-touch .stage-svg { transform-origin: 50% 50%; animation: mono-in 1.4s cubic-bezier(.33,1,.68,1) both; }
+@keyframes mono-in { from { transform: scale(.82) rotate(-18deg); } }
 .stage-piece { position: absolute; left: 0; top: 0; overflow: visible; will-change: transform; }
 .stage-grain { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: .05;
   background: url("/texturas/grano.png") repeat; background-size: 256px; }

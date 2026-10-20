@@ -63,8 +63,55 @@ export default function Hero() {
       smax = Math.min(vh * 0.68, (vw * 0.8) / MONOGRAM_ASPECT);
       svgPieces.forEach((el) => { el.style.width = el.style.height = `${smax * 1.1}px`; el.style.margin = `${-smax * 0.55}px 0 0 ${-smax * 0.55}px`; });
     };
-    measure();
-    addEventListener("resize", measure);
+    // Pantallas táctiles: todo el hero son animaciones de la placa de video que el scroll solo "rebobina"
+    // (currentTime). Safari repinta lo que cambia de escala desde JS en cada cuadro; una animación pausada no.
+    const touch = !fine;
+    root.classList.toggle("hero-touch", touch);
+    let anims: Animation[] = [];
+    let lastCt = -1;
+    const build = () => {
+      anims.forEach((a) => a.cancel());
+      anims = []; lastCt = -1;
+      const hr = hrCache;
+      if (!touch || !hr) return;
+      const N = 60, nw = vw < 768;
+      const kPieces: Keyframe[][] = [[], [], []], kPhoto: Keyframe[] = [], kSpot: Keyframe[] = [], kRow: Keyframe[] = [], kHint: Keyframe[] = [];
+      const kLines: Keyframe[][] = lines.map(() => []);
+      for (let s = 0; s <= N; s++) {
+        const p = s / N, offset = p;
+        const split = inOut(seg(p, 0.12, 0.62)), merge = inOut(seg(p, 0.86, 1)), open = split * (1 - merge);
+        const ph = ease(seg(p, 0.18, 0.6));
+        const S = smax * (nw ? 1 - 0.38 * open : 1);
+        const size = S + (hr.height - S) * merge;
+        const cx = vw / 2 + (hr.left + hr.width / 2 - vw / 2) * merge;
+        const cy = vh / 2 - (nw ? vh * 0.24 * open : 0) + (hr.top + hr.height / 2 - vh / 2) * merge;
+        const k = size / smax;
+        svgPieces.forEach((_, i) => {
+          const a = MONOGRAM_AWAY[i], pc = SVG_PIECES[i];
+          const sx = nw ? 0.42 : 1, py = nw && i === 2 ? 0.62 : a.p[1];
+          const x = (pc.cx + a.p[0] * sx * open) * smax, y = (pc.cy - py * open) * smax;
+          const flip = Math.cos(a.r[1] * open * 0.9);
+          kPieces[i].push({ offset, transform: `translate3d(${cx.toFixed(2)}px,${cy.toFixed(2)}px,0) scale(${k.toFixed(4)}) translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) rotate(${(a.r[2] * 57.3 * open).toFixed(3)}deg) scale(${flip.toFixed(4)},1)` });
+        });
+        kPhoto.push({ offset, opacity: 0.22 + 0.78 * ph, transform: `scale(${(1.25 - 0.25 * ph).toFixed(4)})` });
+        kSpot.push({ offset, opacity: 1 - ph * 0.7 });
+        lines.forEach((_, i) => {
+          const v = ease(seg(p, 0.5 + i * 0.06, 0.66 + i * 0.06));
+          kLines[i].push({ offset, opacity: v > 0 ? 1 : 0, transform: `translate3d(0,${(110 * (1 - v)).toFixed(2)}%,0)` });
+        });
+        const rr = ease(seg(p, 0.7, 0.82));
+        kRow.push({ offset, opacity: rr, transform: `translate3d(0,${(20 * (1 - rr)).toFixed(2)}px,0)` });
+        kHint.push({ offset, opacity: 1 - seg(p, 0.02, 0.1) });
+      }
+      const opts: KeyframeAnimationOptions = { duration: 1000, fill: "both", easing: "linear" };
+      svgPieces.forEach((el, i) => anims.push(el.animate(kPieces[i], opts)));
+      anims.push(photo.animate(kPhoto, opts), spot.animate(kSpot, opts), row.animate(kRow, opts), hint.animate(kHint, opts));
+      lines.forEach((el, i) => anims.push(el.animate(kLines[i], opts)));
+      anims.forEach((a) => a.pause());
+    };
+    const onMeasure = () => { measure(); build(); };
+    onMeasure();
+    addEventListener("resize", onMeasure);
     // Solo escribe en el DOM si el valor cambió.
     const last = new WeakMap<HTMLElement, Record<string, string>>();
     const put = (el: HTMLElement, k: string, v: string) => {
@@ -90,6 +137,14 @@ export default function Hero() {
       ps = ps < 0 || fine ? target : ps + (target - ps) * 0.22;
       if (Math.abs(target - ps) < 0.0004) ps = target;
       const p = ps;
+      if (anims.length) {
+        const ct = Math.round(p * 10000) / 10;
+        if (ct !== lastCt) { lastCt = ct; anims.forEach((a) => { a.currentTime = ct; }); }
+        const logo = inOut(seg(p, 0.86, 1)) > 0.98 ? "flat" : "3d";
+        if (root.dataset.heroLogo !== logo) root.dataset.heroLogo = logo;
+        put(svg, "opacity", logo === "flat" ? "0" : "1");
+        return;
+      }
       const t = scene ? (now - t0) / 1000 : (now - svgStart) / 1000;
       const intro = ease(clamp((now - svgStart) / 1000 / 1.4));
       const split = inOut(seg(p, 0.12, 0.62));
@@ -181,7 +236,9 @@ export default function Hero() {
       io.disconnect();
       removeEventListener("pointermove", onMove);
       removeEventListener("resize", onResize);
-      removeEventListener("resize", measure);
+      removeEventListener("resize", onMeasure);
+      anims.forEach((a) => a.cancel());
+      root.classList.remove("hero-touch");
       scene?.dispose();
       delete root.dataset.heroLogo;
     };
