@@ -807,7 +807,7 @@ html.hero-touch .stage-svg { transform-origin: 50% 50%; animation: mono-in 1.4s 
 .stage-hint { position: absolute; left: 50%; bottom: 28px; z-index: 3; transform: translateX(-50%); color: var(--silver); display: none; }
 
 /* Modo vivo: el escenario mide 320vh y la escena queda fija; JS mueve todo según el scroll. */
-html.hero-live .stage { height: 320vh; }
+html.hero-live .stage { height: 200vh; } /* una sola pantalla de scroll: con un deslizamiento el monograma llega al navbar */
 html.hero-live .stage-sticky { position: sticky; top: 0; height: 100vh; min-height: 0; }
 html.hero-live .stage-spot { opacity: 1; }
 html.hero-live .stage-gl, html.hero-live .stage-hint { display: block; }

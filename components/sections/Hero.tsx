@@ -88,8 +88,8 @@ export default function Hero() {
       const kLines: Keyframe[][] = lines.map(() => []);
       for (let s = 0; s <= N; s++) {
         const p = s / N, offset = p;
-        const split = inOut(seg(p, 0.1, 0.5)), merge = inOut(seg(p, 0.76, 1)), open = split * (1 - merge);
-        const ph = ease(seg(p, 0.14, 0.48));
+        const split = inOut(seg(p, 0.04, 0.4)), merge = inOut(seg(p, 0.48, 1)), open = split * (1 - merge);
+        const ph = ease(seg(p, 0.06, 0.4));
         const S = smax * (nw ? 1 - 0.38 * open : 1);
         const size = S + (hr.height - S) * merge;
         const cx = vw / 2 + (hr.left + hr.width / 2 - vw / 2) * merge;
@@ -105,15 +105,15 @@ export default function Hero() {
         kPhoto.push({ offset, opacity: 0.22 + 0.78 * ph, transform: `scale(${(1.25 - 0.25 * ph).toFixed(4)})` });
         kSpot.push({ offset, opacity: 1 - ph * 0.7 });
         lines.forEach((_, i) => {
-          const v = ease(seg(p, 0.38 + i * 0.05, 0.52 + i * 0.05));
+          const v = ease(seg(p, 0.2 + i * 0.04, 0.34 + i * 0.04));
           kLines[i].push({ offset, opacity: v > 0 ? 1 : 0, transform: `translate3d(0,${(110 * (1 - v)).toFixed(2)}%,0)` });
         });
-        const rr = ease(seg(p, 0.54, 0.66));
+        const rr = ease(seg(p, 0.32, 0.46));
         kRow.push({ offset, opacity: rr, transform: `translate3d(0,${(20 * (1 - rr)).toFixed(2)}px,0)` });
-        kHint.push({ offset, opacity: 1 - seg(p, 0.02, 0.1) });
+        kHint.push({ offset, opacity: 1 - seg(p, 0.01, 0.06) });
       }
       // Traspaso al final: se apagan las piezas y aparece el logo de la cabecera en el mismo lugar.
-      const kOut: Keyframe[] = [{ offset: 0, opacity: 1 }, { offset: 0.985, opacity: 1 }, { offset: 0.99, opacity: 0 }, { offset: 1, opacity: 0 }];
+      const kOut: Keyframe[] = [{ offset: 0, opacity: 1 }, { offset: 0.94, opacity: 1 }, { offset: 0.995, opacity: 0 }, { offset: 1, opacity: 0 }];
       const kIn: Keyframe[] = kOut.map((k) => ({ ...k, opacity: 1 - (k.opacity as number) }));
       scrollDriven = !!VT;
       const opts = (VT
@@ -155,10 +155,10 @@ export default function Hero() {
       }
       const t = scene ? (now - t0) / 1000 : (now - svgStart) / 1000;
       const intro = ease(clamp((now - svgStart) / 1000 / 1.4));
-      const split = inOut(seg(p, 0.1, 0.5));
-      const merge = inOut(seg(p, 0.76, 1));
+      const split = inOut(seg(p, 0.04, 0.4));
+      const merge = inOut(seg(p, 0.48, 1));
       const open = split * (1 - merge);
-      const ph = ease(seg(p, 0.14, 0.48));
+      const ph = ease(seg(p, 0.06, 0.4));
       tilt.x += (tgt.x - tilt.x) * 0.07;
       tilt.y += (tgt.y - tilt.y) * 0.07;
 
@@ -168,14 +168,14 @@ export default function Hero() {
       put(spot, "opacity", (1 - ph * 0.7).toFixed(3));
       if (fine) put(spot, "--mx", `${(50 + tilt.y * 22).toFixed(1)}%`);
       lines.forEach((el, i) => {
-        const v = ease(seg(p, 0.38 + i * 0.05, 0.52 + i * 0.05));
+        const v = ease(seg(p, 0.2 + i * 0.04, 0.34 + i * 0.04));
         put(el, "transform", `translate3d(0,${(110 * (1 - v)).toFixed(2)}%,0)`);
         put(el, "opacity", v > 0 ? "1" : "0");
       });
-      const rr = ease(seg(p, 0.54, 0.66));
+      const rr = ease(seg(p, 0.32, 0.46));
       put(row, "opacity", rr.toFixed(3));
       put(row, "transform", `translate3d(0,${(20 * (1 - rr)).toFixed(2)}px,0)`);
-      put(hint, "opacity", (1 - seg(p, 0.02, 0.1)).toFixed(3));
+      put(hint, "opacity", (1 - seg(p, 0.01, 0.06)).toFixed(3));
 
       // Traspaso: mientras el 3D vive, el logo plano de la cabecera se oculta.
       const done = merge > 0.98;
