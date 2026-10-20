@@ -45,15 +45,33 @@ export default function Hero() {
     const row = stage.querySelector<HTMLElement>(".stage-row")!;
     const hint = stage.querySelector<HTMLElement>(".stage-hint")!;
     const headerMono = document.querySelector<HTMLElement>(".header-mono");
-    const svg = stage.querySelector<SVGSVGElement>(".stage-svg")!;
-    const svgPieces = Array.from(svg.querySelectorAll<SVGGElement>("g[data-i]"));
-    const svgGroup = svg.querySelector<SVGGElement>("g.stage-svg-group")!;
+    const svg = stage.querySelector<HTMLElement>(".stage-svg")!;
+    const svgPieces = Array.from(svg.querySelectorAll<HTMLElement>(".stage-piece"));
+    const sticky = stage.querySelector<HTMLElement>(".stage-sticky")!;
     const svgStart = performance.now();
-    // La posición del logo de la cabecera se mide solo al cambiar el tamaño, no en cada cuadro.
-    let hrCache = headerMono?.getBoundingClientRect();
-    const measure = () => { hrCache = headerMono?.getBoundingClientRect(); };
-    addEventListener("resize", measure);
     const fine = matchMedia("(pointer: fine)").matches;
+    // Todo lo que es medida se lee solo al cambiar el tamaño, nunca en cada cuadro.
+    // vh sale del escenario fijo (100vh): no cambia cuando la barra del navegador del celular aparece o se esconde.
+    let hrCache = headerMono?.getBoundingClientRect();
+    let top = 0, len = 1, vw = innerWidth, vh = innerHeight, smax = 1;
+    const measure = () => {
+      hrCache = headerMono?.getBoundingClientRect();
+      vw = innerWidth; vh = sticky.offsetHeight || innerHeight;
+      top = stage.getBoundingClientRect().top + scrollY;
+      len = Math.max(1, stage.offsetHeight - vh);
+      // Las piezas se dibujan una vez al tamaño máximo y después solo se achican: nunca se repintan.
+      smax = Math.min(vh * 0.68, (vw * 0.8) / MONOGRAM_ASPECT);
+      svgPieces.forEach((el) => { el.style.width = el.style.height = `${smax * 1.1}px`; el.style.margin = `${-smax * 0.55}px 0 0 ${-smax * 0.55}px`; });
+    };
+    measure();
+    addEventListener("resize", measure);
+    // Solo escribe en el DOM si el valor cambió.
+    const last = new WeakMap<HTMLElement, Record<string, string>>();
+    const put = (el: HTMLElement, k: string, v: string) => {
+      let c = last.get(el); if (!c) last.set(el, (c = {}));
+      if (c[k] !== v) { c[k] = v; el.style.setProperty(k, v); }
+    };
+    let ps = -1;
     const narrow = () => window.innerWidth < 768;
 
     let scene: { resize: (w: number, h: number) => void; render: (f: SceneFrame) => void; dispose: () => void } | null = null;
@@ -67,8 +85,11 @@ export default function Hero() {
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
-      const r = stage.getBoundingClientRect();
-      const p = clamp(-r.top / (r.height - innerHeight));
+      const target = clamp((scrollY - top) / len);
+      // En pantallas táctiles el scroll llega a saltos: el avance se suaviza para que la animación no tironee.
+      ps = ps < 0 || fine ? target : ps + (target - ps) * 0.22;
+      if (Math.abs(target - ps) < 0.0004) ps = target;
+      const p = ps;
       const t = scene ? (now - t0) / 1000 : (now - svgStart) / 1000;
       const intro = ease(clamp((now - svgStart) / 1000 / 1.4));
       const split = inOut(seg(p, 0.12, 0.62));
@@ -79,42 +100,44 @@ export default function Hero() {
       tilt.y += (tgt.y - tilt.y) * 0.07;
 
       // La foto ya se ve tenue detrás del monograma y se aclara al separarse las piezas.
-      photo.style.opacity = String(0.22 + 0.78 * ph);
-      photo.style.transform = `scale(${1.25 - 0.25 * ph})`;
-      spot.style.opacity = String(1 - ph * 0.7);
-      spot.style.setProperty("--mx", `${50 + tilt.y * 22}%`);
+      put(photo, "opacity", (0.22 + 0.78 * ph).toFixed(3));
+      put(photo, "transform", `scale(${(1.25 - 0.25 * ph).toFixed(4)})`);
+      put(spot, "opacity", (1 - ph * 0.7).toFixed(3));
+      if (fine) put(spot, "--mx", `${(50 + tilt.y * 22).toFixed(1)}%`);
       lines.forEach((el, i) => {
         const v = ease(seg(p, 0.5 + i * 0.06, 0.66 + i * 0.06));
-        el.style.transform = `translateY(${110 * (1 - v)}%)`;
-        el.style.opacity = v > 0 ? "1" : "0";
+        put(el, "transform", `translate3d(0,${(110 * (1 - v)).toFixed(2)}%,0)`);
+        put(el, "opacity", v > 0 ? "1" : "0");
       });
       const rr = ease(seg(p, 0.7, 0.82));
-      row.style.opacity = String(rr);
-      row.style.transform = `translateY(${20 * (1 - rr)}px)`;
-      hint.style.opacity = String(1 - seg(p, 0.02, 0.1));
+      put(row, "opacity", rr.toFixed(3));
+      put(row, "transform", `translate3d(0,${(20 * (1 - rr)).toFixed(2)}px,0)`);
+      put(hint, "opacity", (1 - seg(p, 0.02, 0.1)).toFixed(3));
 
       // Traspaso: mientras el 3D vive, el logo plano de la cabecera se oculta.
       const done = merge > 0.98;
-      root.dataset.heroLogo = done ? "flat" : "3d";
-      canvas.style.opacity = done ? "0" : "1";
+      const logo = done ? "flat" : "3d";
+      if (root.dataset.heroLogo !== logo) root.dataset.heroLogo = logo; // tocar <html> recalcula toda la página
+      put(canvas, "opacity", done ? "0" : "1");
       // Monograma SVG (celular, y en escritorio hasta que llega el 3D): mismas piezas y mismo recorrido, en 2D.
       const hr = hrCache;
       if (hr) {
         const nw = narrow();
-        const S = Math.min(innerHeight * 0.68, (innerWidth * 0.8) / MONOGRAM_ASPECT) * (0.82 + 0.18 * intro) * (nw ? 1 - 0.38 * open : 1);
+        const S = smax * (0.82 + 0.18 * intro) * (nw ? 1 - 0.38 * open : 1);
         const size = S + (hr.height - S) * merge;
-        const cx = innerWidth / 2 + (hr.left + hr.width / 2 - innerWidth / 2) * merge;
-        const cy = innerHeight / 2 - (nw ? innerHeight * 0.24 * open : 0) + (hr.top + hr.height / 2 - innerHeight / 2) * merge
+        const cx = vw / 2 + (hr.left + hr.width / 2 - vw / 2) * merge;
+        const cy = vh / 2 - (nw ? vh * 0.24 * open : 0) + (hr.top + hr.height / 2 - vh / 2) * merge
           + Math.sin(t * 1.1) * 6 * (1 - merge);
-        svgGroup.setAttribute("transform", `translate(${cx} ${cy}) scale(${size}) rotate(${(tilt.y * 6 + (1 - intro) * -18) * (1 - merge)})`);
-        svgPieces.forEach((g, i) => {
+        const k = size / smax, rot = (tilt.y * 6 + (1 - intro) * -18) * (1 - merge);
+        // Cada pieza es su propia capa: solo cambia su transform, que se mueve sin repintar.
+        svgPieces.forEach((el, i) => {
           const a = MONOGRAM_AWAY[i], pc = SVG_PIECES[i];
           const sx = nw ? 0.42 : 1, py = nw && i === 2 ? 0.62 : a.p[1];
-          const x = pc.cx + a.p[0] * sx * open, y = pc.cy - py * open;
+          const x = (pc.cx + a.p[0] * sx * open) * smax, y = (pc.cy - py * open) * smax;
           const flip = Math.cos(a.r[1] * open * 0.9);
-          g.setAttribute("transform", `translate(${x} ${y}) rotate(${(a.r[2] * 57.3) * open}) scale(${flip} 1)`);
+          put(el, "transform", `translate3d(${cx.toFixed(2)}px,${cy.toFixed(2)}px,0) rotate(${rot.toFixed(3)}deg) scale(${k.toFixed(4)}) translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) rotate(${(a.r[2] * 57.3 * open).toFixed(3)}deg) scale(${flip.toFixed(4)},1)`);
         });
-        svg.style.opacity = done || scene ? "0" : "1";
+        put(svg, "opacity", done || scene ? "0" : "1");
       }
       if (scene && !done && hr) {
         scene.render({ t, intro, open, merge, fade: 1 - 0.65 * ph, tiltX: tilt.x, tiltY: tilt.y, narrow: narrow(),
@@ -172,22 +195,20 @@ export default function Hero() {
           <img src="/portfolio/p01-1200.jpg" srcSet="/portfolio/p01-640.jpg 640w, /portfolio/p01-1200.jpg 1200w" sizes="100vw" alt="Agus Martín con su credencial de educador" fetchPriority="high" />
         </div>
         <canvas ref={canvasRef} className="stage-gl" aria-hidden="true" />
-        <svg className="stage-svg" aria-hidden="true" width="100%" height="100%">
-          <defs>
-            <linearGradient id="am-metal" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#f7f5f0" />
-              <stop offset=".55" stopColor="#d9d6cf" />
-              <stop offset="1" stopColor="#9e9c96" />
-            </linearGradient>
-          </defs>
-          <g className="stage-svg-group">
-            {SVG_PIECES.map((pc, i) => (
-              <g key={i} data-i={i} transform={`translate(${pc.cx} ${pc.cy})`}>
-                <path d={pc.d} fill="url(#am-metal)" />
-              </g>
-            ))}
-          </g>
-        </svg>
+        <div className="stage-svg" aria-hidden="true">
+          {SVG_PIECES.map((pc, i) => (
+            <svg key={i} className="stage-piece" viewBox="-0.55 -0.55 1.1 1.1">
+              <defs>
+                <linearGradient id={`am-metal-${i}`} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#f7f5f0" />
+                  <stop offset=".55" stopColor="#d9d6cf" />
+                  <stop offset="1" stopColor="#9e9c96" />
+                </linearGradient>
+              </defs>
+              <path d={pc.d} fill={`url(#am-metal-${i})`} />
+            </svg>
+          ))}
+        </div>
         <div className="stage-grain" aria-hidden="true" />
         <div className="stage-copy wrap">
           <h1 id="hero-title" className="stage-title">
