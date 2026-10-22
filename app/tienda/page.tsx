@@ -20,9 +20,8 @@ export default function TiendaPage() {
           <span className="t-label header-name">{site.brand}</span>
         </a>
         <nav className="header-index" aria-label="Tienda">
-          <span className="t-label header-section">Tienda</span>
           <HeaderCountdown />
-          <a href="/#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
+          <a href={site.checkoutUrl} className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
         </nav>
       </header>
       <main className="tienda">

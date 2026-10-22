@@ -5,6 +5,7 @@ import Cursor from "@/components/Cursor";
 import HeaderCountdown from "@/components/HeaderCountdown";
 import SiteFooter from "@/components/SiteFooter";
 import { portfolioHero, chapters, values, collab } from "@/lib/portfolio";
+import { site } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Agus Martín — Portafolio 2026",
@@ -21,9 +22,8 @@ export default function PortfolioPage() {
           <span className="t-label header-name">Agus Martín Academy</span>
         </a>
         <nav className="header-index" aria-label="Portafolio">
-          <span className="t-label header-section">Portafolio 2026</span>
           <HeaderCountdown />
-          <a href="/#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
+          <a href={site.checkoutUrl} className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
         </nav>
       </header>
 

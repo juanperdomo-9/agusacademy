@@ -28,7 +28,7 @@ export default function SiteFooter() {
         <p className="sf-cta-title">¿Listo para cortar con método?</p>
         <div className="sf-cta-side">
           <HeaderCountdown />
-          <a className="btn" href="/#inscripcion" data-cursor="Inscribirme"><span className="btn-label">Inscribirme</span></a>
+          <a className="btn" href={site.checkoutUrl} data-cursor="Inscribirme"><span className="btn-label">Inscribirme</span></a>
         </div>
       </div>
 

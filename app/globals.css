@@ -956,9 +956,6 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
 .student-devices { display: grid; gap: var(--s3); justify-items: start; border-top: 1px solid var(--rule-dark); padding-top: var(--s6); }
 .student-devices ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s2); }
 .student-devices button { background: none; border: 0; padding: 0; cursor: pointer; color: var(--bone); }
-.header-login { color: var(--silver); text-decoration: none; }
-.header-login:hover { color: var(--bone); }
-@media (max-width: 767px) { .header-login { display: none; } } /* en celular: «Mi curso» en el pie */
 .checkout-line { width: 100%; display: flex; justify-content: space-between; gap: var(--s4); align-items: baseline; padding-block: var(--s4); border-block: 1px solid var(--rule-dark); }
 .checkout-line strong { font-size: 1.5rem; font-variation-settings: var(--w-wide); white-space: nowrap; }
 .auth-card .btn[disabled] { opacity: .5; cursor: not-allowed; }
