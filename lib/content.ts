@@ -5,7 +5,7 @@
 export const site = {
   brand: "Agus Martín Academy",
   instagram: "https://www.instagram.com/agusmartiin_/",
-  checkoutUrl: "#inscripcion", // TODO: link de Mercado Pago
+  checkoutUrl: "/comprar/", // pide sesión iniciada y ahí se paga con Mercado Pago
   // Fecha y hora REALES de cierre del precio de lanzamiento (con zona horaria).
   launchEndsAt: "2026-11-15T23:59:00-03:00", // PROVISORIO
 };

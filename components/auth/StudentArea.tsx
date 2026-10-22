@@ -70,7 +70,7 @@ export default function StudentArea() {
         {view === "buy" && (
           <>
             <p className="auth-lead">Si ya pagaste, puede tardar unos minutos en aparecer. Si pagaste con otro mail, escribinos por Instagram.</p>
-            <a className="btn" href={site.checkoutUrl.startsWith("#") ? `/${site.checkoutUrl}` : site.checkoutUrl}><span className="btn-label">Inscribirme</span></a>
+            <a className="btn" href={site.checkoutUrl}><span className="btn-label">Inscribirme</span></a>
           </>
         )}
       </div>

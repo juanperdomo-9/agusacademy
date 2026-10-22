@@ -60,13 +60,13 @@ export async function signIn(email: string, password: string): Promise<string | 
   return claim(sb);
 }
 
-export async function signUp(email: string, password: string): Promise<{ error: string | null; confirm: boolean }> {
+export async function signUp(email: string, password: string, next: string | null): Promise<{ error: string | null; confirm: boolean }> {
   const sb = supabase();
   if (!sb) return { error: NOT_CONFIGURED, confirm: false };
   const { data, error } = await sb.auth.signUp({
     email: email.trim().toLowerCase(),
     password,
-    options: { emailRedirectTo: `${location.origin}/ingresar/` },
+    options: { emailRedirectTo: `${location.origin}/ingresar/${next ? `?next=${encodeURIComponent(next)}` : ""}` },
   });
   if (error) {
     return { error: /registered|exists/i.test(error.message) ? "Ya hay una cuenta con ese mail. Iniciá sesión." : /password/i.test(error.message) ? "La contraseña tiene que tener al menos 8 caracteres." : "No pudimos crear la cuenta. Probá de nuevo.", confirm: false };
@@ -92,6 +92,12 @@ export async function setNewPassword(password: string): Promise<string | null> {
   const { error } = await sb.auth.updateUser({ password });
   if (error) return /different|same/i.test(error.message) ? "Elegí una contraseña distinta a la anterior." : "La contraseña tiene que tener al menos 8 caracteres.";
   return claim(sb);
+}
+
+// A dónde volver después de ingresar (?next=/comprar/). Solo rutas internas.
+export function nextPath(): string | null {
+  const n = new URLSearchParams(location.search).get("next");
+  return n && n.startsWith("/") && !n.startsWith("//") ? n : null;
 }
 
 export type SessionState = "ok" | "out" | "kicked";

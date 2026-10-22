@@ -959,3 +959,6 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
 .header-login { color: var(--silver); text-decoration: none; }
 .header-login:hover { color: var(--bone); }
 @media (max-width: 767px) { .header-login { display: none; } } /* en celular: «Mi curso» en el pie */
+.checkout-line { width: 100%; display: flex; justify-content: space-between; gap: var(--s4); align-items: baseline; padding-block: var(--s4); border-block: 1px solid var(--rule-dark); }
+.checkout-line strong { font-size: 1.5rem; font-variation-settings: var(--w-wide); white-space: nowrap; }
+.auth-card .btn[disabled] { opacity: .5; cursor: not-allowed; }

@@ -1,7 +1,14 @@
 "use client";
 
-import { useState, type FormEvent, type ReactNode } from "react";
-import { signIn, signUp, requestReset, setNewPassword } from "@/lib/session";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { signIn, signUp, requestReset, setNewPassword, nextPath } from "@/lib/session";
+
+// Mantiene el ?next= en los links entre ingresar y crear cuenta (por ejemplo, para volver a la compra).
+function useNextQuery() {
+  const [q, setQ] = useState("");
+  useEffect(() => { const n = nextPath(); if (n) setQ(`?next=${encodeURIComponent(n)}`); }, []);
+  return q;
+}
 
 const MIN = 8;
 
@@ -57,19 +64,20 @@ const Email = () => <Field label="Mail" name="email" type="email" autoComplete="
 const s = (d: FormData, k: string) => String(d.get(k) ?? "");
 
 export function LoginForm() {
+  const q = useNextQuery();
   return (
     <Form
       title="Ingresar."
-      lead="Entrá con el mail con el que compraste el curso."
+      lead="Entrá con tu mail y contraseña."
       submit="Ingresar"
       onSubmit={async (d) => {
         const error = await signIn(s(d, "email"), s(d, "password"));
-        if (!error) location.assign("/mi-curso/");
+        if (!error) location.assign(nextPath() ?? "/mi-curso/");
         return { error };
       }}
       foot={<>
         <a href="/recuperar/">¿Te olvidaste la contraseña?</a>
-        <span>¿Primera vez? <a href="/crear-cuenta/">Creá tu cuenta</a></span>
+        <span>¿Primera vez? <a href={`/crear-cuenta/${q}`}>Creá tu cuenta</a></span>
       </>}
     >
       <Email />
@@ -79,21 +87,22 @@ export function LoginForm() {
 }
 
 export function SignupForm() {
+  const q = useNextQuery();
   return (
     <Form
       title="Creá tu cuenta."
-      lead="Usá el mismo mail con el que pagaste: así el curso queda en tu cuenta."
+      lead="Para comprar el curso necesitás una cuenta: ahí queda guardado, con acceso de por vida."
       submit="Crear cuenta"
       onSubmit={async (d) => {
         const pw = s(d, "password");
         if (pw.length < MIN) return { error: `La contraseña tiene que tener al menos ${MIN} caracteres.` };
         if (pw !== s(d, "repeat")) return { error: "Las contraseñas no coinciden." };
-        const r = await signUp(s(d, "email"), pw);
+        const r = await signUp(s(d, "email"), pw, nextPath());
         if (r.error) return { error: r.error };
         if (r.confirm) return { ok: "Listo. Te mandamos un mail para confirmar la cuenta: tocá el link y después iniciá sesión." };
-        location.assign("/mi-curso/");
+        location.assign(nextPath() ?? "/mi-curso/");
       }}
-      foot={<span>¿Ya tenés cuenta? <a href="/ingresar/">Ingresá</a></span>}
+      foot={<span>¿Ya tenés cuenta? <a href={`/ingresar/${q}`}>Ingresá</a></span>}
     >
       <Email />
       <Field label="Contraseña" name="password" type="password" autoComplete="new-password" minLength={MIN} required />
