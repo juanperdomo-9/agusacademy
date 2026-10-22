@@ -38,7 +38,7 @@ export const hero = {
   lead: "El método completo de Agus Martín para dominar el fade, la tijera y la terminación, filmado corte por corte.",
   cta: "Inscribirme",
   secondary: "Ver los 6 módulos",
-  countdownLabel: "El precio de lanzamiento termina en",
+  countdownLabel: "Reservá tu lugar en los próximos",
   // Dato público del afiche de su gira en Instagram (visto el 2026-10-15). Confirmar con Agus.
   proof: "Formador en 13 ciudades",
 };

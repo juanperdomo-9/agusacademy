@@ -19,8 +19,8 @@ export default function HeaderCountdown() {
   const value = left === null ? "--:--" : `${pad(Math.floor(left / 60))}:${pad(left % 60)}`;
 
   return (
-    <a href={site.checkoutUrl} className="header-count" aria-label={`El lanzamiento termina en ${value}`}>
-      <span className="header-count-label t-note">El lanzamiento termina en</span>
+    <a href={site.checkoutUrl} className="header-count" aria-label={`Reservá tu lugar en los próximos ${value} minutos`}>
+      <span className="header-count-label t-note">Reservá tu lugar</span>
       <span className="header-count-value">{value}</span>
     </a>
   );
