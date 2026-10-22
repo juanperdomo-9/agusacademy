@@ -13,6 +13,11 @@ services:
       # Next.js 16 necesita Node 20.9 o más.
       - key: NODE_VERSION
         value: "22"
+      # Cuentas de alumnos (Supabase). Se cargan a mano en Render → Environment; sin ellas el login queda desactivado.
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
     headers:
       # Los archivos de _next/static tienen hash en el nombre: se pueden cachear para siempre.
       - path: /_next/static/*

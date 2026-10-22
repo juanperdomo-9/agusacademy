@@ -924,3 +924,38 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
 }
 .sf .header-count-label { display: inline; }
 @media (max-width: 1023px) { .enroll-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Cuenta de alumno ---------- */
+.auth-back { color: var(--silver); text-decoration: none; }
+.auth-back:hover { color: var(--bone); }
+.auth { min-height: 100svh; padding-top: calc(var(--header-h) + var(--s16)); padding-bottom: var(--s16); display: grid; align-content: start; justify-items: center; }
+.auth-card { width: 100%; max-width: 440px; display: grid; gap: var(--s6); justify-items: start; }
+.auth-title { font-size: clamp(2.25rem, 6vw, 3.5rem); font-weight: 600; font-variation-settings: var(--w-wide); text-transform: uppercase; line-height: .95; letter-spacing: -.01em; }
+.auth-lead { color: var(--silver); max-width: 40ch; }
+.auth-form { width: 100%; display: grid; gap: var(--s4); }
+.auth-form .btn { width: 100%; justify-content: center; margin-top: var(--s2); }
+.auth-form .btn[disabled] { opacity: .6; cursor: progress; }
+.field { display: grid; gap: var(--s2); }
+.field span { color: var(--silver); }
+/* 16px como mínimo: con menos, el iPhone hace zoom al tocar el campo. */
+.field input { font: inherit; font-size: 1rem; color: var(--bone); background: transparent; border: 1px solid var(--rule-dark);
+  padding: 14px 16px; border-radius: 0; transition: border-color var(--t-hover) var(--ease-out); }
+.field input:focus { outline: none; border-color: var(--bone); }
+.field input:-webkit-autofill { -webkit-text-fill-color: var(--bone); box-shadow: 0 0 0 100px var(--coal) inset; }
+.auth-msg { padding: var(--s3) var(--s4); border: 1px solid var(--rule-dark); font-size: .9375rem; }
+.auth-msg--error { border-color: #8a3b32; color: #e8b4ad; }
+.auth-msg--ok { color: var(--bone); }
+.auth-foot { display: grid; gap: var(--s2); color: var(--silver); }
+.auth-foot a { color: var(--bone); }
+.student { width: 100%; max-width: 960px; display: grid; gap: var(--s12); }
+.student-head { display: grid; gap: var(--s4); justify-items: start; }
+.student-modules { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 1px; background: var(--rule-dark); border: 1px solid var(--rule-dark); }
+.student-module { background: var(--coal); padding: var(--s6); display: grid; gap: var(--s2); align-content: start; }
+.student-module-name { font-size: 1.375rem; font-weight: 600; font-variation-settings: var(--w-wide); text-transform: uppercase; }
+.student-soon { color: var(--ash); margin-top: var(--s3); }
+.student-devices { display: grid; gap: var(--s3); justify-items: start; border-top: 1px solid var(--rule-dark); padding-top: var(--s6); }
+.student-devices ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s2); }
+.student-devices button { background: none; border: 0; padding: 0; cursor: pointer; color: var(--bone); }
+.header-login { color: var(--silver); text-decoration: none; }
+.header-login:hover { color: var(--bone); }
+@media (max-width: 767px) { .header-login { display: none; } } /* en celular: «Mi curso» en el pie */

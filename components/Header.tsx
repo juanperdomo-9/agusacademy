@@ -39,6 +39,7 @@ export default function Header() {
         <output className="t-label header-output" aria-live="off">
           {pad(current + 1)} / {pad(sections.length)}
         </output>
+        <a href="/mi-curso/" className="t-label header-login">Ingresar</a>
         <HeaderCountdown />
         <a href="#inscripcion" className="header-cta t-label"><span className="btn-label">Inscribirme</span></a>
       </nav>

@@ -75,3 +75,18 @@ Público y verificable en https://www.instagram.com/agusmartiin_/ (visto el 2026
 ## Accessibility & Inclusion
 
 Sin requisito específico confirmado. Base: WCAG 2.2 AA, subtítulos o texto alternativo en los videos con voz, y respetar `prefers-reduced-motion` en las animaciones.
+
+## Cuentas de alumnos (armado, falta activar)
+
+Mail + contraseña con Supabase Auth, recuperación por mail. Reglas anti-préstamo: máximo 2 dispositivos por cuenta
+y una sola sesión abierta (entrar en otro dispositivo cierra la anterior; se comprueba cada minuto).
+Páginas: /ingresar, /crear-cuenta, /recuperar, /nueva-clave, /mi-curso. Código: `lib/session.ts`, `components/auth/`.
+
+Para activarlo:
+1. Crear proyecto en supabase.com → SQL Editor → correr `supabase/migrations/0001_alumnos_sesiones.sql`.
+2. Authentication → URL Configuration: Site URL = la URL de la web; Redirect URLs = `<url>/ingresar/` y `<url>/nueva-clave/`.
+3. Render → Environment: `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Project Settings → API) y redeploy.
+4. Mails: conectar Resend como SMTP en Authentication → SMTP (el mail propio de Supabase tiene límite bajo) y traducir las plantillas.
+5. Dar acceso: por ahora a mano (`insert into enrollments (email) values (...)`); después lo hace el webhook de Mercado Pago.
+
+Pendiente: videos protegidos (Bunny Stream, links firmados que verifiquen la sesión), panel para Agus, webhook de pago.

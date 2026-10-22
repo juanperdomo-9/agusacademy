@@ -39,6 +39,7 @@ export default function SiteFooter() {
           <a href="/#agus">Quién enseña</a>
           <a href="/#inscripcion">Inscripción</a>
           <a href="/#preguntas">Preguntas</a>
+          <a href="/mi-curso/">Mi curso</a>
         </div>
         <div>
           <p className="t-label t-soft">Más</p>
