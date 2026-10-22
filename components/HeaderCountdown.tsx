@@ -2,27 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/lib/content";
+import { secondsLeft } from "@/lib/offerTimer";
 
-// Contador compacto para la barra: recuerda en todo momento que el precio de lanzamiento vence.
-// Usa la misma fecha real que el contador del hero (site.launchEndsAt); nunca se reinicia.
+// Contador compacto para la barra: el mismo final que el del hero (30 minutos por visita).
 export default function HeaderCountdown() {
-  const end = new Date(site.launchEndsAt).getTime();
   const [left, setLeft] = useState<number | null>(null);
 
   useEffect(() => {
-    const tick = () => setLeft(Math.max(0, end - Date.now()));
+    const tick = () => setLeft(secondsLeft());
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [end]);
+  }, []);
 
-  if (left === 0) return <a href="/#inscripcion" className="header-count t-note">Lanzamiento cerrado</a>;
-  const t = Math.floor((left ?? 0) / 1000);
   const pad = (n: number) => String(n).padStart(2, "0");
-  const value = left === null ? "--d --:--:--" : `${Math.floor(t / 86400)}d ${pad(Math.floor((t % 86400) / 3600))}:${pad(Math.floor((t % 3600) / 60))}:${pad(t % 60)}`;
+  const value = left === null ? "--:--" : `${pad(Math.floor(left / 60))}:${pad(left % 60)}`;
 
   return (
-    <a href="/#inscripcion" className="header-count" aria-label={`El precio de lanzamiento termina en ${value}`}>
+    <a href={site.checkoutUrl} className="header-count" aria-label={`El lanzamiento termina en ${value}`}>
       <span className="header-count-label t-note">El lanzamiento termina en</span>
       <span className="header-count-value">{value}</span>
     </a>
