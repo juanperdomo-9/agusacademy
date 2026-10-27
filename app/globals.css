@@ -947,7 +947,7 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
 .auth-msg--ok { color: var(--bone); }
 .auth-foot { display: grid; gap: var(--s2); color: var(--silver); }
 .auth-foot a { color: var(--bone); }
-.student { width: 100%; max-width: 960px; display: grid; gap: var(--s12); }
+.student { width: 100%; max-width: 1320px; display: grid; gap: var(--s12); }
 .student-head { display: grid; gap: var(--s4); justify-items: start; }
 .student-modules { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 1px; background: var(--rule-dark); border: 1px solid var(--rule-dark); }
 .student-module { background: var(--coal); padding: var(--s6); display: grid; gap: var(--s2); align-content: start; }
@@ -964,3 +964,46 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
    atadas al scroll: sin esto repintaba en cada cuadro el foco de luz (pantalla completa), el texto y el logo. */
 html.hero-live .stage-spot, html.hero-live .stage-hint, html.hero-live .header-mono { will-change: opacity; }
 html.hero-live .stage-row, html.hero-live .stage-line > span { will-change: transform, opacity; }
+
+/* ---------- El curso por dentro ---------- */
+.player { width: 100%; max-width: 1320px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: var(--s8); align-items: start; }
+.player-main { display: grid; gap: var(--s6); }
+.player-video { position: relative; aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--rule-dark); scroll-margin-top: calc(var(--header-h) + var(--s4)); }
+.player-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.player-empty { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: var(--s4); text-align: center; padding: var(--s6); }
+.player-empty img { width: 56px; height: auto; opacity: .5; }
+.player-info { display: grid; gap: var(--s3); }
+.player-title { font-size: clamp(1.75rem, 3.2vw, 2.75rem); font-weight: 600; font-variation-settings: var(--w-wide); text-transform: uppercase; line-height: 1; }
+.player-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); margin-top: var(--s3); }
+.player-actions button:not(.btn) { background: none; border: 1px solid var(--rule-dark); color: var(--bone); padding: 12px 16px; cursor: pointer; transition: border-color var(--t-hover) var(--ease-out); }
+.player-actions button:not(.btn):hover { border-color: var(--silver); }
+.player-actions button[disabled] { opacity: .35; cursor: default; }
+.player-seen[data-on="true"] { border-color: var(--bone) !important; }
+.player-next { margin-left: auto; }
+.player-list { position: sticky; top: calc(var(--header-h) + var(--s6)); max-height: calc(100vh - var(--header-h) - var(--s12)); overflow: auto; border: 1px solid var(--rule-dark); overscroll-behavior: contain; }
+.player-progress { padding: var(--s4); border-bottom: 1px solid var(--rule-dark); display: grid; gap: var(--s3); }
+.player-progress p { display: flex; justify-content: space-between; gap: var(--s3); white-space: nowrap; }
+.player-bar { height: 2px; background: var(--rule-dark); }
+.player-bar span { display: block; height: 100%; background: var(--bone); transform-origin: left; transition: transform 500ms var(--ease-out); }
+.player-module { border-bottom: 1px solid var(--rule-dark); }
+.player-module:last-child { border-bottom: 0; }
+.player-module summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: var(--s1) var(--s3); align-items: baseline; padding: var(--s4); }
+.player-module summary > :first-child { grid-column: 1 / -1; }
+.player-module summary::-webkit-details-marker { display: none; }
+.player-module-name { font-weight: 600; text-transform: uppercase; font-variation-settings: var(--w-wide); font-size: .9375rem; }
+.player-module ol { list-style: none; margin: 0; padding: 0 0 var(--s3); }
+.player-lesson { width: 100%; display: grid; grid-template-columns: 16px 1fr auto; gap: var(--s3); align-items: center; text-align: left;
+  background: none; border: 0; color: var(--silver); padding: 10px var(--s4); cursor: pointer; font: inherit; font-size: .9375rem; }
+.player-lesson:hover { color: var(--bone); }
+.player-lesson[aria-current="true"] { color: var(--bone); background: var(--coal-raised, #181816); box-shadow: inset 2px 0 0 var(--bone); }
+.player-check { width: 14px; height: 14px; border: 1px solid var(--ash); border-radius: 50%; display: grid; place-items: center; }
+.player-check[data-on="true"] { background: var(--bone); border-color: var(--bone); }
+.player-check[data-on="true"]::after { content: ""; width: 6px; height: 3px; border: solid var(--coal); border-width: 0 0 1.5px 1.5px; transform: translateY(-1px) rotate(-45deg); }
+@media (max-width: 1023px) {
+  .player { grid-template-columns: 1fr; }
+  .player-list { position: static; max-height: none; }
+  .player-video { margin-inline: calc(var(--gutter) * -1); border-inline: 0; }
+  .player-next { margin-left: 0; width: 100%; }
+  .player-actions > button:not(.btn) { flex: 1; }
+}
+@media (max-width: 1023px) { .auth:has(.player) { padding-top: var(--header-h); } }

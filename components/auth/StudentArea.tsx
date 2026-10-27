@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { course, site } from "@/lib/content";
+import { site } from "@/lib/content";
+import CoursePlayer from "@/components/auth/CoursePlayer";
 import { checkSession, signOut, supabase, NOT_CONFIGURED } from "@/lib/session";
 
 type Device = { device_id: string; label: string | null; last_seen: string };
@@ -66,7 +67,7 @@ export default function StudentArea() {
     <div className="student">
       <div className="student-head">
         <p className="t-label t-soft">{email}</p>
-        <h1 className="auth-title">{view === "course" ? "Tu curso." : "Todavía no tenés el curso."}</h1>
+        {view === "buy" && <h1 className="auth-title">Todavía no tenés el curso.</h1>}
         {view === "buy" && (
           <>
             <p className="auth-lead">Si ya pagaste, puede tardar unos minutos en aparecer. Si pagaste con otro mail, escribinos por Instagram.</p>
@@ -75,18 +76,7 @@ export default function StudentArea() {
         )}
       </div>
 
-      {view === "course" && (
-        <ol className="student-modules">
-          {course.modules.map((m) => (
-            <li key={m.n} className="student-module">
-              <span className="t-label t-soft">Módulo {m.n}</span>
-              <h2 className="student-module-name">{m.name}</h2>
-              <p className="t-note t-soft">{m.detail}</p>
-              <span className="t-label student-soon">Clases disponibles pronto</span>
-            </li>
-          ))}
-        </ol>
-      )}
+      {view === "course" && <CoursePlayer />}
 
       <section className="student-devices" aria-labelledby="devs">
         <h2 id="devs" className="t-label">Tus dispositivos ({devices.length} de 2)</h2>
