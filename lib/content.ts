@@ -89,7 +89,9 @@ export const course = {
 export const products = {
   title: "Productos.",
   lead: "Texturizadores, ceras y cremas Forma Essent para terminar cada corte.",
-  buyUrl: "#", // TODO: link de compra (tienda o WhatsApp)
+  // Precio en pesos para el carrito. 0 = todavía sin precio (se muestra `price`, que va entre corchetes).
+  pickup: "[Dirección del local para retirar]",
+  shippingNote: "El costo del envío se calcula según tu zona y te lo confirmamos antes de pagar.",
   items: [
     {
       id: "polvo-texturizador",
@@ -98,6 +100,7 @@ export const products = {
       text: "El aliado perfecto para un look con más actitud.",
       specs: ["Volumen natural", "Textura mate", "Fijación fuerte"],
       price: "[$XX.XXX]",
+      amount: 0,
       image: "/productos/polvo-texturizador.jpg",
     },
     {
@@ -107,6 +110,7 @@ export const products = {
       text: "Textura, volumen y movimiento natural. Con romero, argán y provitamina B5.",
       specs: ["Efecto playero", "Acabado natural", "Para peinados texturizados"],
       price: "[$XX.XXX]",
+      amount: 0,
       image: "/productos/agua-marina.jpg",
     },
     {
@@ -116,6 +120,7 @@ export const products = {
       text: "Estilo natural todo el día, sin brillo. 100 g.",
       specs: ["Fijación media", "Sin brillo", "Textura flexible"],
       price: "[$XX.XXX]",
+      amount: 0,
       image: "/productos/cera-mate.jpg",
     },
     {
@@ -125,6 +130,7 @@ export const products = {
       text: "Hidratación, definición y fuerza. Almendra, romero, ricino, ortiga, jojoba y argán.",
       specs: ["Apto vegano", "Libre de parabenos", "Apto cowash"],
       price: "[$XX.XXX]",
+      amount: 0,
       image: "/productos/crema-rizos.jpg",
     },
   ],

@@ -4,6 +4,7 @@ import Motion from "@/components/Motion";
 import Cursor from "@/components/Cursor";
 import HeaderCountdown from "@/components/HeaderCountdown";
 import SiteFooter from "@/components/SiteFooter";
+import Cart from "@/components/Cart";
 import { site } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function TiendaPage() {
         <Products />
       </main>
       <SiteFooter />
+      <Cart />
       <Motion />
       <Cursor />
     </>

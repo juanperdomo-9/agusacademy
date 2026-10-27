@@ -1,4 +1,5 @@
 import { products } from "@/lib/content";
+import { AddToCart } from "@/components/Cart";
 
 export default function Products() {
   return (
@@ -9,7 +10,7 @@ export default function Products() {
       </div>
       <ul className="products-grid">
         {products.items.map((p, i) => (
-          <li key={p.id} id={p.id} className="product" data-cursor="Comprar">
+          <li key={p.id} id={p.id} className="product" data-cursor="Agregar">
             <figure className="piece product-piece">
               <div className="piece-media product-media">
                 <img src={p.image} alt={`${p.name} Forma Essent`} width={1200} height={1500} loading="lazy" />
@@ -26,9 +27,7 @@ export default function Products() {
               <p className="t-note t-soft">{p.specs.join(" · ")}</p>
               <div className="product-buy">
                 <span className="t-headline">{p.price}</span>
-                <a className="btn btn--ghost btn--small" href={products.buyUrl}>
-                  <span className="btn-label">Comprar</span>
-                </a>
+                <AddToCart id={p.id} />
               </div>
             </div>
           </li>
