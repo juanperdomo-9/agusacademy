@@ -959,3 +959,8 @@ html.has-cursor .cursor[data-state="label"] .cursor-label { opacity: 1; }
 .checkout-line { width: 100%; display: flex; justify-content: space-between; gap: var(--s4); align-items: baseline; padding-block: var(--s4); border-block: 1px solid var(--rule-dark); }
 .checkout-line strong { font-size: 1.5rem; font-variation-settings: var(--w-wide); white-space: nowrap; }
 .auth-card .btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* Hero: todo lo que anima el scroll va en su propia capa. Safari no las crea solo para las animaciones
+   atadas al scroll: sin esto repintaba en cada cuadro el foco de luz (pantalla completa), el texto y el logo. */
+html.hero-live .stage-spot, html.hero-live .stage-hint, html.hero-live .header-mono { will-change: opacity; }
+html.hero-live .stage-row, html.hero-live .stage-line > span { will-change: transform, opacity; }
