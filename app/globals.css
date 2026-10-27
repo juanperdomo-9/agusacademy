@@ -1014,3 +1014,17 @@ html.hero-live .stage-row, html.hero-live .stage-line > span { will-change: tran
 .tvideo-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .tvideo-sound { position: absolute; left: var(--s3); bottom: var(--s3); background: var(--bone); color: var(--coal); border: 0; padding: 10px 14px; cursor: pointer; }
 @media (max-width: 767px) { .tvideo { width: 100%; } }
+
+/* ---------- Legales ---------- */
+.legal { width: 100%; max-width: 68ch; display: grid; gap: var(--s4); }
+.legal h2 { font-size: 1.125rem; font-weight: 600; text-transform: uppercase; font-variation-settings: var(--w-wide); margin-top: var(--s6); }
+.legal p, .legal li { color: var(--silver); line-height: 1.6; }
+.legal ul { padding-left: 1.2em; display: grid; gap: var(--s2); }
+.legal a, .legal strong { color: var(--bone); }
+.legal-form { margin-top: var(--s6); max-width: 440px; }
+.field select, .field textarea { font: inherit; font-size: 1rem; color: var(--bone); background: var(--coal); border: 1px solid var(--rule-dark); padding: 14px 16px; border-radius: 0; }
+.field select:focus, .field textarea:focus { outline: none; border-color: var(--bone); }
+.sf-legal { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); }
+.sf-legal a { color: var(--silver); }
+/* Resolución 424/2020: el botón de arrepentimiento tiene que estar a la vista. */
+.sf-revoke { color: var(--bone) !important; text-decoration: underline; text-underline-offset: .3em; }

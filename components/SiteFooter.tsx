@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { site } from "@/lib/content";
+import { legal, site } from "@/lib/content";
 import HeaderCountdown from "@/components/HeaderCountdown";
 
 const WORD = "Agus Martín";
@@ -61,7 +61,13 @@ export default function SiteFooter() {
 
       <div className="sf-bottom t-note">
         <span>© 2026 {site.brand}</span>
-        <span className="t-soft">[Datos legales a confirmar]</span>
+        <span className="t-soft">{legal.owner} · CUIT {legal.cuit}</span>
+        <nav className="sf-legal" aria-label="Legales">
+          <a href="/arrepentimiento/" className="sf-revoke">Botón de arrepentimiento</a>
+          <a href="/terminos/">Términos y condiciones</a>
+          <a href="/privacidad/">Privacidad</a>
+          <a href="https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario" target="_blank" rel="noopener noreferrer">Defensa del Consumidor</a>
+        </nav>
         <a href="#top" className="sf-top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Volver arriba ↑</a>
         <span>Diseño y desarrollo web: <a href="https://jpweb.com.ar" target="_blank" rel="noopener">JP Web</a></span>
       </div>

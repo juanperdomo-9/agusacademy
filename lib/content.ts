@@ -10,6 +10,15 @@ export const site = {
   offerMinutes: 30,
 };
 
+// Datos del vendedor para las páginas legales y el pie. PROVISORIO: los completa Agus.
+export const legal = {
+  owner: "[Nombre o razón social]",
+  cuit: "[CUIT]",
+  address: "[Domicilio]",
+  email: "[mail de contacto]",
+  updated: "27 de octubre de 2026",
+};
+
 export const sections = [
   { id: "inicio", label: "Inicio" },
   { id: "trabajo", label: "El trabajo" },
