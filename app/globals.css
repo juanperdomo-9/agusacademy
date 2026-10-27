@@ -1028,3 +1028,44 @@ html.hero-live .stage-row, html.hero-live .stage-line > span { will-change: tran
 .sf-legal a { color: var(--silver); }
 /* Resolución 424/2020: el botón de arrepentimiento tiene que estar a la vista. */
 .sf-revoke { color: var(--bone) !important; text-decoration: underline; text-underline-offset: .3em; }
+
+/* ---------- Panel de administración ---------- */
+.admin { width: 100%; max-width: 1200px; display: grid; gap: var(--s8); }
+.admin-head { display: grid; gap: var(--s3); }
+.admin-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule-dark); border: 1px solid var(--rule-dark); margin: 0; }
+.admin-stats div { background: var(--coal); padding: var(--s6); display: grid; gap: var(--s2); }
+.admin-stats dd { margin: 0; font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; font-variation-settings: var(--w-wide); line-height: 1; }
+.admin-tools { display: flex; flex-wrap: wrap; gap: var(--s4); justify-content: space-between; }
+.admin-tools input { font: inherit; font-size: 1rem; color: var(--bone); background: transparent; border: 1px solid var(--rule-dark); padding: 12px 14px; min-width: 0; }
+.admin-tools input:focus { outline: none; border-color: var(--bone); }
+.admin-search { flex: 1 1 260px; max-width: 360px; }
+.admin-grant { display: flex; gap: var(--s3); flex: 1 1 360px; max-width: 480px; }
+.admin-grant input { flex: 1; }
+.admin-table-wrap { border: 1px solid var(--rule-dark); overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: .9375rem; }
+.admin-table th { text-align: left; font-family: inherit; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--silver); font-weight: 500; padding: var(--s3) var(--s4); border-bottom: 1px solid var(--rule-dark); white-space: nowrap; }
+.admin-table td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--rule-dark); vertical-align: middle; }
+.admin-table tr:last-child td { border-bottom: 0; }
+.admin-tag { margin-left: var(--s2); font-size: .75rem; color: var(--ash); border: 1px solid var(--rule-dark); padding: 2px 6px; }
+.admin-actions { display: flex; gap: var(--s2); justify-content: flex-end; flex-wrap: wrap; }
+.admin-actions button { background: none; border: 1px solid var(--rule-dark); color: var(--bone); padding: 8px 12px; cursor: pointer; font: inherit; font-size: .8125rem; white-space: nowrap; }
+.admin-actions button:hover { border-color: var(--silver); }
+.admin-empty { padding: var(--s6); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* En celular la tabla pasa a tarjetas. */
+@media (max-width: 767px) {
+  .admin-stats { grid-template-columns: 1fr; }
+  .admin-table thead { display: none; }
+  .admin-table tr { display: grid; gap: var(--s1); padding: var(--s4); border-bottom: 1px solid var(--rule-dark); }
+  .admin-table td { border: 0; padding: 0; display: flex; justify-content: space-between; gap: var(--s3); }
+  .admin-table td[data-label]::before { content: attr(data-label); color: var(--silver); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+  .admin-table td:first-child { font-weight: 600; }
+  .admin-table td:first-child::before { display: none; }
+  .admin-actions { justify-content: flex-start; margin-top: var(--s2); }
+}
+.admin, .admin-tools > * { min-width: 0; }
+@media (max-width: 767px) {
+  .admin-search, .admin-grant { max-width: none; flex-basis: 100%; }
+  .admin-grant { flex-direction: column; }
+  .admin-grant .btn { width: 100%; }
+}

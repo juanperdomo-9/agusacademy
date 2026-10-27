@@ -90,3 +90,9 @@ Para activarlo:
 5. Dar acceso: por ahora a mano (`insert into enrollments (email) values (...)`); después lo hace el webhook de Mercado Pago.
 
 Pendiente: videos protegidos (Bunny Stream, links firmados que verifiquen la sesión), panel para Agus, webhook de pago.
+
+## Panel de administración (/admin)
+
+Alumnos, ventas, dar/quitar acceso y liberar dispositivos. Sin Supabase muestra datos de ejemplo.
+Para activarlo: correr `supabase/migrations/0002_panel_admin.sql` y darle permiso a la cuenta de Agus
+(`insert into admins (user_id) select id from auth.users where email = '...'`).
