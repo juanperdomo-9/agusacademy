@@ -1,5 +1,6 @@
 import { students } from "@/lib/content";
 import Piece from "@/components/Piece";
+import TestimonialVideo from "@/components/TestimonialVideo";
 
 // Testimonios: solo reales y con permiso (hasta tenerlos van entre corchetes).
 // Las fotos son de seminarios reales de Agus, tomadas de su portfolio.
@@ -9,6 +10,7 @@ export default function Students() {
       <div className="students-copy">
         <h2 id="students-title" className="t-display">{students.title}</h2>
         <p className="t-lead">{students.lead}</p>
+        <TestimonialVideo {...students.video} />
         <ul className="students-list">
           {students.items.map((t) => (
             <li key={t.name}>

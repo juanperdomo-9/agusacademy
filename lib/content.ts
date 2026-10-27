@@ -169,7 +169,11 @@ export const students = {
   title: "Alumnos.",
   lead: "Así se aprende con Agus: en la silla, en vivo y en comunidad.",
   // Solo testimonios reales y con permiso. Hasta tenerlos quedan entre corchetes.
-  items: [1, 2, 3].map((i) => ({ name: `[Alumno ${i}]`, city: "[Ciudad]", text: "[Testimonio real, con permiso del alumno.]" })),
+  video: { src: "/alumnos/bauti.mp4", poster: "/alumnos/bauti.jpg", name: "Bauti", role: "Alumno de la academia" },
+  items: [
+    { name: "Bauti", city: "Alumno de la academia", text: "Arranqué hace dos semanas y estoy cortando de lo mejor. La verdad, me está saliendo todo." },
+    ...[2, 3].map((i) => ({ name: `[Alumno ${i}]`, city: "[Ciudad]", text: "[Testimonio real, con permiso del alumno.]" })),
+  ],
   // Fotos reales de seminarios, del portfolio de Agus.
   photos: [
     { src: "/portfolio/p08.jpeg", w: 1365, h: 2048, n: "S1", name: "Demostración en vivo" },

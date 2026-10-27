@@ -1007,3 +1007,10 @@ html.hero-live .stage-row, html.hero-live .stage-line > span { will-change: tran
   .player-actions > button:not(.btn) { flex: 1; }
 }
 @media (max-width: 1023px) { .auth:has(.player) { padding-top: var(--header-h); } }
+
+/* Testimonio en video (vertical) */
+.tvideo { display: grid; gap: var(--s3); width: min(100%, 340px); }
+.tvideo-frame { position: relative; aspect-ratio: 9 / 16; background: var(--coal-raised); overflow: hidden; border: 1px solid var(--rule-dark); }
+.tvideo-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tvideo-sound { position: absolute; left: var(--s3); bottom: var(--s3); background: var(--bone); color: var(--coal); border: 0; padding: 10px 14px; cursor: pointer; }
+@media (max-width: 767px) { .tvideo { width: 100%; } }
