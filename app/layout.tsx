@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import "./globals.css";
+import { site } from "@/lib/content";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -12,6 +13,17 @@ const archivo = Archivo({
 export const metadata: Metadata = {
   title: "Agus Martín Academy — Curso online de barbería",
   description: "El método completo de Agus Martín para dominar el fade, la tijera y la terminación.",
+  metadataBase: new URL(site.url),
+  // Lo que se ve al compartir el link (WhatsApp, Instagram, Facebook, X).
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    siteName: "Agus Martín Academy",
+    title: "Agus Martín Academy — Curso online de barbería",
+    description: "Cortá con método, no de oído. El método completo de Agus Martín, filmado corte por corte.",
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Agus Martín Academy: cortá con método, no de oído." }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og.jpg"] },
   // Íconos con dirección limpia (sin ?query): Render no servía /icon.png?icon...
   icons: { icon: "/favicon.png", apple: "/apple-touch-icon.png" },
 };

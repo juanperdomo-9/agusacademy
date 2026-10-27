@@ -4,6 +4,8 @@
 
 export const site = {
   brand: "Agus Martín Academy",
+  // Dirección pública de la web. Cambiar acá cuando se conecte agusmartinacademy.com.ar.
+  url: "https://agus-martin-academy.onrender.com",
   instagram: "https://www.instagram.com/agusmartiin_/",
   checkoutUrl: "/comprar/", // pide sesión iniciada y ahí se paga con Mercado Pago
   // Minutos de la cuenta regresiva: arranca de nuevo en cada visita (pedido de Agus).
